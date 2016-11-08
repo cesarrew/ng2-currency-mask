@@ -1,0 +1,39 @@
+{
+    "name": "ng2-currency-mask",
+    "version": "1.0.0",
+    "description": "A very simple currency mask directive that allows using a number attribute with the ngModel.",
+    "main": "index.js",
+    "typings": "./index.d.ts",
+    "scripts": {
+        "prepublish": "typings install && tsc --outDir ."
+    },
+    "repository": {
+        "type": "git",
+        "url": ""
+    },
+    "keywords": [
+        "angular",
+        "angular2",
+        "currency",
+        "mask",
+        "model",
+        "money",
+        "ng2",
+        "number"
+    ],
+    "author": "César Mendonça",
+    "license": "MIT",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "devDependencies": {
+        "@angular/common": "2.1.2",
+        "@angular/core": "2.1.2",
+        "@angular/forms": "2.1.2",
+        "rxjs": "5.0.0-beta.12",
+        "typescript": "2.0.8",
+        "typings": "1.5.0",
+        "zone.js": "0.6.26"
+    }
+}
