@@ -9,7 +9,7 @@
     },
     "repository": {
         "type": "git",
-        "url": ""
+        "url": "git@github.com:cesarrew/ng2-currency-mask.git"
     },
     "keywords": [
         "angular",
@@ -24,9 +24,9 @@
     "author": "César Mendonça",
     "license": "MIT",
     "bugs": {
-        "url": ""
+        "url": "https://github.com/cesarrew/ng2-currency-mask/issues"
     },
-    "homepage": "",
+    "homepage": "https://github.com/cesarrew/ng2-currency-mask",
     "devDependencies": {
         "@angular/common": "2.1.2",
         "@angular/core": "2.1.2",

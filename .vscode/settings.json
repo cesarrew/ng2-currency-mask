@@ -1,0 +1,12 @@
+{
+    "files.exclude": {
+        "**/*.d.ts": true,
+        "**/*.js": true,
+        "**/*.map": true,
+        ".vscode": true,
+        "node_modules": true,
+        "typings": true
+    },
+    "editor.wrappingColumn": -1,
+    "typescript.check.workspaceVersion": false
+}

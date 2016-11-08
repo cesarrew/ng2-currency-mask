@@ -1,13 +1,12 @@
 {
+    "version": "2.0.8",
     "compilerOptions": {
+        "noImplicitAny": true,
+        "module": "commonjs",
+        "target": "es5",
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "noImplicitAny": true,
-        "removeComments": false,
         "sourceMap": true,
-        "suppressImplicitAnyIndexErrors": true,
-        "target": "es5"
+        "declaration": true
     }
 }
