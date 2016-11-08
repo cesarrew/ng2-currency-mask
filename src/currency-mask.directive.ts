@@ -1,7 +1,7 @@
-import { AfterViewInit, Directive, ElementRef, forwardRef, HostListener, Input } from "@angular/core";
-import { NG_VALUE_ACCESSOR } from "@angular/forms";
+import { AfterViewInit, Directive, ElementRef, forwardRef, HostListener, Input, OnInit } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { InputHandler } from "./input.handler";
+import { InputHandler } from './input.handler';
 
 export const CURRENCYMASKDIRECTIVE_VALUE_ACCESSOR: any = {
     provide: NG_VALUE_ACCESSOR,
@@ -13,7 +13,7 @@ export const CURRENCYMASKDIRECTIVE_VALUE_ACCESSOR: any = {
     selector: "input[currencyMask]",
     providers: [CURRENCYMASKDIRECTIVE_VALUE_ACCESSOR]
 })
-export class CurrencyMaskDirective implements AfterViewInit {
+export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccessor, OnInit {
 
     @Input()
     options: any = {};
@@ -34,6 +34,9 @@ export class CurrencyMaskDirective implements AfterViewInit {
 
     ngAfterViewInit() {
         this.elementRef.nativeElement.style.textAlign = "right";
+    }
+    
+    ngOnInit() {
         this.inputHandler = new InputHandler(this.elementRef.nativeElement, Object.assign({}, this.optionsTemplate, this.options));
     }
 

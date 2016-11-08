@@ -16,14 +16,14 @@ Install the package by command:
 Import the module
 
 ```ts
-import {CurrencyMaskModule} from 'ng2-currency-mask';
+import { CurrencyMaskModule } from "ng2-currency-mask";
 
 @NgModule({
-    declarations: [...],
     imports: [
         //... you others modules
         CurrencyMaskModule
     ],
+    declarations: [...],
     providers: [...]
 })
 export class AppModule {}
@@ -32,7 +32,7 @@ export class AppModule {}
 ### Using 
 
 ```html
-    <input currencyMoney [(ngModel)]="value" />
+    <input currencyMask [(ngModel)]="value" />
 ```
 
  * `ngModel` An attribute of type number. If is displayed `'$ 25.63'`, the attribute will be `'25.63'`.
@@ -43,7 +43,7 @@ You can set options...
 
 ```html
     <!-- example for pt-BR money -->
-    <input currencyMoney [(ngModel)]="value" [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"/>
+    <input currencyMask [(ngModel)]="value" [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"/>
 ```  
 
 Available options: 
