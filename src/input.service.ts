@@ -16,9 +16,9 @@ export class InputService {
         this.updateFieldValue(selectionStart + 1);
     }
 
-    applyMask(rawValue: string) {
+    applyMask(isNumber: boolean, rawValue: string) {
+        rawValue = isNumber ? new Number(rawValue).toFixed(2) : rawValue;  
         let {allowNegative, precision, thousands, decimal} = this.options;
-        let operator = (rawValue.indexOf("-") > -1 && allowNegative) ? "-" : "";
         let onlyNumbers = rawValue.replace(/[^0-9]/g, "");
         let integerPart = onlyNumbers.slice(0, onlyNumbers.length - precision).replace(/^0*/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, thousands);
 
@@ -27,24 +27,26 @@ export class InputService {
         }
 
         let newRawValue = integerPart;
+        let decimalPart = onlyNumbers.slice(onlyNumbers.length - precision);
+        let leadingZeros = new Array((precision + 1) - decimalPart.length).join("0");
 
         if (precision > 0) {
-            let decimalPart = onlyNumbers.slice(onlyNumbers.length - precision);
-            let leadingZeros = new Array((precision + 1) - decimalPart.length).join("0");
             newRawValue += decimal + leadingZeros + decimalPart;
         }
 
+        let isZero = parseInt(integerPart) + parseInt(decimalPart) == 0;
+        let operator = (rawValue.indexOf("-") > -1 && allowNegative && !isZero) ? "-" : "";
         return operator + this.options.prefix + newRawValue;
     }
 
     clearMask(rawValue: string) {
         let value = (rawValue || "0");
-        value = value.replace(this.options.prefix, "").replace(this.options.thousands, "").replace(this.options.decimal, ".");
+        value = value.replace(this.options.prefix, "").replace(new RegExp("\\" + this.options.thousands, "g"), "").replace(this.options.decimal, ".");
         return parseFloat(value);
     }
 
     changeToNegative() {
-        if (this.options.allowNegative && this.rawValue != "" && this.rawValue.charAt(0) != "-") {
+        if (this.options.allowNegative && this.rawValue != "" && this.rawValue.charAt(0) != "-" && this.value != 0) {
             this.rawValue = "-" + this.rawValue; 
         }
     }
@@ -78,7 +80,7 @@ export class InputService {
     }
 
     updateFieldValue(selectionStart?: number) {
-        let newRawValue = this.applyMask(this.rawValue || "");
+        let newRawValue = this.applyMask(false, this.rawValue || "");
         selectionStart = selectionStart == undefined ? this.rawValue.length : selectionStart;
         this.inputManager.updateValueAndCursor(newRawValue, this.rawValue.length, selectionStart);
     }
@@ -106,6 +108,6 @@ export class InputService {
     }
 
     set value(value: number) {
-        this.rawValue = this.applyMask("" + value);
+        this.rawValue = this.applyMask(true, "" + value);
     }
 }
