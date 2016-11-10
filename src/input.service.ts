@@ -17,8 +17,8 @@ export class InputService {
     }
 
     applyMask(isNumber: boolean, rawValue: string) {
-        rawValue = isNumber ? new Number(rawValue).toFixed(2) : rawValue;  
         let {allowNegative, precision, thousands, decimal} = this.options;
+        rawValue = isNumber ? new Number(rawValue).toFixed(precision) : rawValue;  
         let onlyNumbers = rawValue.replace(/[^0-9]/g, "");
         let integerPart = onlyNumbers.slice(0, onlyNumbers.length - precision).replace(/^0*/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, thousands);
 
@@ -28,20 +28,27 @@ export class InputService {
 
         let newRawValue = integerPart;
         let decimalPart = onlyNumbers.slice(onlyNumbers.length - precision);
-        let leadingZeros = new Array((precision + 1) - decimalPart.length).join("0");
 
         if (precision > 0) {
-            newRawValue += decimal + leadingZeros + decimalPart;
+            newRawValue += decimal + decimalPart;
         }
 
-        let isZero = parseInt(integerPart) + parseInt(decimalPart) == 0;
+        let isZero = parseInt(integerPart) == 0 && (parseInt(decimalPart) == 0 || decimalPart == "");
         let operator = (rawValue.indexOf("-") > -1 && allowNegative && !isZero) ? "-" : "";
         return operator + this.options.prefix + newRawValue;
     }
 
     clearMask(rawValue: string) {
-        let value = (rawValue || "0");
-        value = value.replace(this.options.prefix, "").replace(new RegExp("\\" + this.options.thousands, "g"), "").replace(this.options.decimal, ".");
+        let value = (rawValue || "0").replace(this.options.prefix, "");
+
+        if (this.options.thousands) {
+            value = value.replace(new RegExp("\\" + this.options.thousands, "g"), "");
+        }
+
+        if (this.options.decimal) {
+            value = value.replace(this.options.decimal, ".");
+        }
+        
         return parseFloat(value);
     }
 
