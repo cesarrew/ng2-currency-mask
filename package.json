@@ -1,41 +1,41 @@
 {
-    "name": "ng2-currency-mask",
-    "version": "1.0.3",
-    "description": "A very simple currency mask directive that allows using a number attribute with the ngModel.",
-    "scripts": {
-        "prepublish": "ngc"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/cesarrew/ng2-currency-mask.git"
-    },
-    "keywords": [
-        "angular",
-        "angular2",
-        "currency",
-        "mask",
-        "model",
-        "money",
-        "ng2",
-        "number"
-    ],
-    "author": "César Mendonça",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/cesarrew/ng2-currency-mask/issues"
-    },
-    "homepage": "https://github.com/cesarrew/ng2-currency-mask",
-    "devDependencies": {
-        "@angular/common": "2.2.0",
-        "@angular/compiler": "2.2.0",
-        "@angular/compiler-cli": "2.2.0",
-        "@angular/core": "2.2.0",
-        "@angular/forms": "2.2.0",
-        "@angular/platform-browser": "2.2.0",
-        "@angular/platform-server": "2.2.0",
-        "@types/core-js": "0.9.34",
-        "rxjs": "5.0.0-beta.12",
-        "typescript": "2.0.10",
-        "zone.js": "0.6.26"
-    }
+  "name": "ng2-currency-mask",
+  "version": "1.0.4",
+  "description": "A very simple currency mask directive that allows using a number attribute with the ngModel.",
+  "scripts": {
+    "prepublish": "ngc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cesarrew/ng2-currency-mask.git"
+  },
+  "keywords": [
+    "angular",
+    "angular2",
+    "currency",
+    "mask",
+    "model",
+    "money",
+    "ng2",
+    "number"
+  ],
+  "author": "César Mendonça",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cesarrew/ng2-currency-mask/issues"
+  },
+  "homepage": "https://github.com/cesarrew/ng2-currency-mask",
+  "devDependencies": {
+    "@angular/common": "2.2.0",
+    "@angular/compiler": "2.2.0",
+    "@angular/compiler-cli": "2.2.0",
+    "@angular/core": "2.2.0",
+    "@angular/forms": "2.2.0",
+    "@angular/platform-browser": "2.2.0",
+    "@angular/platform-server": "2.2.0",
+    "@types/core-js": "0.9.34",
+    "rxjs": "5.0.0-beta.12",
+    "typescript": "2.0.10",
+    "zone.js": "0.6.26"
+  }
 }
