@@ -3,6 +3,10 @@
         "declaration": true,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
+        "lib": [
+            "dom",
+            "es6"
+        ],
         "module": "commonjs",
         "moduleResolution": "node",
         "noImplicitAny": true,
