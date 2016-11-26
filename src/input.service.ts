@@ -1,4 +1,4 @@
-import { InputManager } from './input.manager';
+import { InputManager } from "./input.manager";
 
 export class InputService {
 
@@ -8,15 +8,15 @@ export class InputService {
         this.inputManager = new InputManager(htmlInputElement, this.options);
     }
 
-    addNumber(key: number) {
-        let keyChar = String.fromCharCode(key);
+    addNumber(keyCode: number): void {
+        let keyChar = String.fromCharCode(keyCode);
         let selectionStart = this.inputSelection.selectionStart;
         let selectionEnd = this.inputSelection.selectionEnd;
         this.rawValue = this.rawValue.substring(0, selectionStart) + keyChar + this.rawValue.substring(selectionEnd, this.rawValue.length);
         this.updateFieldValue(selectionStart + 1);
     }
 
-    applyMask(isNumber: boolean, rawValue: string) {
+    applyMask(isNumber: boolean, rawValue: string): string {
         let {allowNegative, precision, thousands, decimal} = this.options;
         rawValue = isNumber ? new Number(rawValue).toFixed(precision) : rawValue;  
         let onlyNumbers = rawValue.replace(/[^0-9]/g, "");
@@ -38,7 +38,7 @@ export class InputService {
         return operator + this.options.prefix + newRawValue;
     }
 
-    clearMask(rawValue: string) {
+    clearMask(rawValue: string): number {
         let value = (rawValue || "0").replace(this.options.prefix, "");
 
         if (this.options.thousands) {
@@ -52,22 +52,22 @@ export class InputService {
         return parseFloat(value);
     }
 
-    changeToNegative() {
+    changeToNegative(): void {
         if (this.options.allowNegative && this.rawValue != "" && this.rawValue.charAt(0) != "-" && this.value != 0) {
             this.rawValue = "-" + this.rawValue; 
         }
     }
 
-    changeToPositive() {
+    changeToPositive(): void {
         this.rawValue = this.rawValue.replace("-", "");
     }
 
-    removeNumber(key: number) {
+    removeNumber(keyCode: number): void {
         let selectionStart = this.inputSelection.selectionStart;
         let selectionEnd = this.inputSelection.selectionEnd;
 
-        if (selectionStart === selectionEnd) {
-            if (key === 8) {
+        if (selectionStart == selectionEnd) {
+            if (keyCode === 8) {
                 let lastNumber = this.rawValue.split("").reverse().join("").search(/\d/);
                 selectionStart = this.rawValue.length - lastNumber - 1;
                 selectionEnd = selectionStart + 1;
@@ -80,37 +80,39 @@ export class InputService {
         this.updateFieldValue(selectionStart);
     }
 
-    resetSelection() {
+    resetSelection(): void {
         if (this.htmlInputElement.setSelectionRange) {
             this.htmlInputElement.setSelectionRange(this.rawValue.length, this.rawValue.length);
         }
     }
 
-    updateFieldValue(selectionStart?: number) {
+    updateFieldValue(selectionStart?: number): void {
         let newRawValue = this.applyMask(false, this.rawValue || "");
         selectionStart = selectionStart == undefined ? this.rawValue.length : selectionStart;
         this.inputManager.updateValueAndCursor(newRawValue, this.rawValue.length, selectionStart);
     }
 
-    get canInputMoreNumbers() {
+    get canInputMoreNumbers(): boolean {
         return this.inputManager.canInputMoreNumbers;
     }
 
-    get inputSelection() {
+    get inputSelection(): any {
         return this.inputManager.inputSelection;
     }
 
-    get rawValue() {
-        return this.htmlInputElement && this.htmlInputElement.value;
+    get rawValue(): string {
+        return this.inputManager.rawValue;
     }
 
-    set rawValue(value) {
-        if (this.htmlInputElement) {
-            this.htmlInputElement.value = value;
-        }
+    set rawValue(value: string) {
+        this.inputManager.rawValue = value;
     }
 
-    get value() {
+    get storedRawValue(): string {
+        return this.inputManager.storedRawValue;
+    }
+
+    get value(): number {
         return this.clearMask(this.rawValue);
     }
 

@@ -1,7 +1,7 @@
-import { AfterViewInit, Directive, ElementRef, forwardRef, HostListener, Input, OnInit } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { AfterViewInit, Directive, ElementRef, forwardRef, HostListener, Input, OnInit } from "@angular/core";
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 
-import { InputHandler } from './input.handler';
+import { InputHandler } from "./input.handler";
 
 export const CURRENCYMASKDIRECTIVE_VALUE_ACCESSOR: any = {
     provide: NG_VALUE_ACCESSOR,
@@ -21,6 +21,7 @@ export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccesso
     inputHandler: InputHandler;
 
     optionsTemplate = {
+        align: "right",
         allowNegative: true,
         precision: 2,
         prefix: "$ ",
@@ -33,9 +34,9 @@ export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccesso
     }
 
     ngAfterViewInit() {
-        this.elementRef.nativeElement.style.textAlign = "right";
+        this.elementRef.nativeElement.style.textAlign = this.options.align;
     }
-    
+
     ngOnInit() {
         this.inputHandler = new InputHandler(this.elementRef.nativeElement, Object.assign({}, this.optionsTemplate, this.options));
     }
@@ -47,12 +48,23 @@ export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccesso
 
     @HostListener("cut", ["$event"])
     handleCut(event: any) {
-        this.inputHandler.handleCut(event);
+        if (!this.isChromeAndroid()) {
+            this.inputHandler.handleCut(event);
+        }
+    }
+
+    @HostListener("input", ["$event"])
+    handleInput(event: any) {
+        if (this.isChromeAndroid()) {
+            this.inputHandler.handleInput(event);
+        }
     }
 
     @HostListener("keydown", ["$event"])
     handleKeydown(event: any) {
-        this.inputHandler.handleKeydown(event);
+        if (!this.isChromeAndroid()) {
+            this.inputHandler.handleKeydown(event);
+        }
     }
 
     @HostListener("keypress", ["$event"])
@@ -62,7 +74,13 @@ export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccesso
 
     @HostListener("paste", ["$event"])
     handlePaste(event: any) {
-        this.inputHandler.handlePaste(event);
+        if (!this.isChromeAndroid()) {
+            this.inputHandler.handlePaste(event);
+        }
+    }
+
+    isChromeAndroid(): boolean {
+        return /chrome/i.test(navigator.userAgent) && /android/i.test(navigator.userAgent);
     }
 
     registerOnChange(callbackFunction: Function): void {

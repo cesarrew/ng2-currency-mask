@@ -10,37 +10,72 @@ export class InputHandler {
         this.inputService = new InputService(htmlInputElement, options);
     }
 
-    handleClick(event: any) {
+    handleClick(event: any): void {
         this.inputService.resetSelection();
     }
 
-    handleCut(event: any) {
+    handleCut(event: any): void {
         setTimeout(() => {
             this.inputService.updateFieldValue();
             this.onModelChange(this.inputService.value);
         }, 1);
     }
 
-    handleKeydown(event: any) {
-        let key = event.which || event.charCode || event.keyCode;
+    handleInput(event: any): void {
+        let keyCode = this.inputService.rawValue.charCodeAt(this.inputService.rawValue.length - 1);
+        let rawValueLength = this.inputService.rawValue.length;
+        let rawValueSelectionStart = this.inputService.inputSelection.selectionStart;
+        let storedRawValueLength = this.inputService.storedRawValue.length;
+        this.inputService.rawValue = this.inputService.storedRawValue;
 
-        if (key === undefined) {
-            return false;
+        if (rawValueLength != rawValueSelectionStart || Math.abs(rawValueLength - storedRawValueLength) != 1) {
+            return;
         }
 
-        if (key === 8 || key === 46 || key === 63272) {
+        if (rawValueLength < storedRawValueLength) {
+            this.inputService.removeNumber(8);
+        }
+
+        if (rawValueLength > storedRawValueLength) {
+            switch (keyCode) {
+                case 43:
+                    this.inputService.changeToPositive();
+                    break;
+                case 45:
+                    this.inputService.changeToNegative();
+                    break;
+                default:
+                    if (!this.inputService.canInputMoreNumbers) {
+                        return;
+                    }
+
+                    this.inputService.addNumber(keyCode);
+            }
+        }
+
+        this.onModelChange(this.inputService.value);
+    }
+
+    handleKeydown(event: any): void {
+        let keyCode = event.which || event.charCode || event.keyCode;
+
+        if (keyCode === undefined) {
+            return;
+        }
+
+        if (keyCode === 8 || keyCode === 46 || keyCode === 63272) {
             event.preventDefault();
-            this.inputService.removeNumber(key);
+            this.inputService.removeNumber(keyCode);
             this.onModelChange(this.inputService.value);
         }
     }
 
-    handleKeypress(event: any) {
-        let key = event.which || event.charCode || event.keyCode;
+    handleKeypress(event: any): void {
+        let keyCode = event.which || event.charCode || event.keyCode;
 
-        switch (key) {
+        switch (keyCode) {
             case undefined:
-                return false;
+                return;
             case 43:
                 this.inputService.changeToPositive();
                 break;
@@ -49,17 +84,17 @@ export class InputHandler {
                 break;
             default:
                 if (!this.inputService.canInputMoreNumbers) {
-                    return false;
+                    return;
                 }
 
-                this.inputService.addNumber(key);
+                this.inputService.addNumber(keyCode);
         }
 
         event.preventDefault();
         this.onModelChange(this.inputService.value);
     }
 
-    handlePaste(event: any) {
+    handlePaste(event: any): void {
         setTimeout(() => {
             this.inputService.updateFieldValue();
             this.onModelChange(this.inputService.value);
@@ -70,7 +105,7 @@ export class InputHandler {
         return this.onModelChange;
     }
 
-    setOnModelChange(callbackFunction: Function) {
+    setOnModelChange(callbackFunction: Function): void {
         this.onModelChange = callbackFunction;
     }
 
@@ -82,7 +117,7 @@ export class InputHandler {
         this.onModelTouched = callbackFunction;
     }
 
-    setValue(value: number) {
+    setValue(value: number): void {
         this.inputService.value = value;
     }
 }

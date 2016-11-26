@@ -1,9 +1,11 @@
 export class InputManager {
 
+    private _storedRawValue: string;
+
     constructor(private htmlInputElement: any, private options: any) {
     }
 
-    setCursorAt(position: number) {
+    setCursorAt(position: number): void {
         if (this.htmlInputElement.setSelectionRange) {
             this.htmlInputElement.focus();
             this.htmlInputElement.setSelectionRange(position, position);
@@ -16,14 +18,14 @@ export class InputManager {
         }
     }
 
-    updateValueAndCursor(newRawValue: string, oldLength: number, selectionStart: number) {
+    updateValueAndCursor(newRawValue: string, oldLength: number, selectionStart: number): void {
         this.rawValue = newRawValue;
         let newLength = newRawValue.length;
         selectionStart = selectionStart - (oldLength - newLength);
         this.setCursorAt(selectionStart);
     }
 
-    get canInputMoreNumbers() {
+    get canInputMoreNumbers(): boolean {
         let haventReachedMaxLength = !(this.rawValue.length >= this.htmlInputElement.maxLength && this.htmlInputElement.maxLength >= 0);
         let selectionStart = this.inputSelection.selectionStart;
         let selectionEnd = this.inputSelection.selectionEnd;
@@ -32,7 +34,7 @@ export class InputManager {
         return haventReachedMaxLength || haveNumberSelected || startWithZero;
     }
 
-    get inputSelection() {
+    get inputSelection(): any {
         let selectionStart = 0;
         let selectionEnd = 0;
 
@@ -40,7 +42,7 @@ export class InputManager {
             selectionStart = this.htmlInputElement.selectionStart;
             selectionEnd = this.htmlInputElement.selectionEnd;
         } else {
-            let range = (<any>document).selection.createRange(); //
+            let range = (<any>document).selection.createRange();
 
             if (range && range.parentElement() == this.htmlInputElement) {
                 let lenght = this.htmlInputElement.value.length;
@@ -72,13 +74,19 @@ export class InputManager {
         };
     }
 
-    get rawValue() {
+    get rawValue(): string {
         return this.htmlInputElement && this.htmlInputElement.value;
     }
 
-    set rawValue(value) {
+    set rawValue(value: string) {
+        this._storedRawValue = value;
+
         if (this.htmlInputElement) {
             this.htmlInputElement.value = value;
         }
+    }
+
+    get storedRawValue(): string {
+        return this._storedRawValue;
     }
 }
