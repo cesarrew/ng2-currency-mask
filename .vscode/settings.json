@@ -1,11 +1,12 @@
 {
     "files.exclude": {
+        ".vscode": true,
         "**/*.d.ts": true,
         "**/*.js": true,
         "**/*.map": true,
-        ".vscode": true,
-        "node_modules": true,
-        "typings": true
+        "**/*.metadata.json": true,
+        "aot": true,
+        "node_modules": true
     },
     "editor.wrappingColumn": -1,
     "typescript.check.workspaceVersion": false
