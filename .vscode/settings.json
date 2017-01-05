@@ -1,6 +1,11 @@
 {
     "files.exclude": {
         ".vscode": true,
+        "**/*.d.ts": true,
+        "**/*.js": true,
+        "**/*.map": true,
+        "**/*.metadata.json": true,
+        "aot": true,
         "node_modules": true
     },
     "editor.formatOnSave": true,
