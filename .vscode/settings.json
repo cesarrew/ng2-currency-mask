@@ -1,13 +1,10 @@
 {
     "files.exclude": {
         ".vscode": true,
-        "**/*.d.ts": true,
-        "**/*.js": true,
-        "**/*.map": true,
-        "**/*.metadata.json": true,
-        "aot": true,
         "node_modules": true
     },
+    "editor.formatOnSave": true,
     "editor.wrappingColumn": -1,
+    "html.format.wrapLineLength": 0,
     "typescript.check.workspaceVersion": false
 }
