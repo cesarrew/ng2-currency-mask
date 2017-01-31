@@ -5,7 +5,7 @@ export class InputService {
     private inputManager: InputManager;
 
     constructor(private htmlInputElement: any, private options: any) {
-        this.inputManager = new InputManager(htmlInputElement, this.options);
+        this.inputManager = new InputManager(htmlInputElement);
     }
 
     addNumber(keyCode: number): void {
@@ -90,6 +90,12 @@ export class InputService {
         let newRawValue = this.applyMask(false, this.rawValue || "");
         selectionStart = selectionStart == undefined ? this.rawValue.length : selectionStart;
         this.inputManager.updateValueAndCursor(newRawValue, this.rawValue.length, selectionStart);
+    }
+
+    updateOptions(options: any): void {
+        let value: number = this.value;
+        this.options = options;
+        this.value = value;
     }
 
     get canInputMoreNumbers(): boolean {

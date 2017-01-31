@@ -2,7 +2,7 @@ export class InputManager {
 
     private _storedRawValue: string;
 
-    constructor(private htmlInputElement: any, private options: any) {
+    constructor(private htmlInputElement: any) {
     }
 
     setCursorAt(position: number): void {

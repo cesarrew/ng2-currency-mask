@@ -1,4 +1,4 @@
-import { AfterViewInit, Directive, ElementRef, forwardRef, HostListener, Input, OnInit } from "@angular/core";
+import { AfterViewInit, Directive, DoCheck, ElementRef, forwardRef, HostListener, KeyValueDiffer, KeyValueDiffers, Input, OnInit } from "@angular/core";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 
 import { InputHandler } from "./input.handler";
@@ -13,12 +13,12 @@ export const CURRENCYMASKDIRECTIVE_VALUE_ACCESSOR: any = {
     selector: "input[currencyMask]",
     providers: [CURRENCYMASKDIRECTIVE_VALUE_ACCESSOR]
 })
-export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccessor, OnInit {
+export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccessor, DoCheck, OnInit {
 
-    @Input()
-    options: any = {};
+    @Input() options: any = {};
 
     inputHandler: InputHandler;
+    keyValueDiffer: KeyValueDiffer;
 
     optionsTemplate = {
         align: "right",
@@ -30,11 +30,18 @@ export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccesso
         allowZero: true
     };
 
-    constructor(private elementRef: ElementRef) {
+    constructor(private elementRef: ElementRef, private keyValueDiffers: KeyValueDiffers) {
+        this.keyValueDiffer = keyValueDiffers.find({}).create(null);
     }
 
     ngAfterViewInit() {
         this.elementRef.nativeElement.style.textAlign = this.options.align;
+    }
+
+    ngDoCheck() {
+        if (this.keyValueDiffer.diff(this.options)) {
+            this.inputHandler.updateOptions(Object.assign({}, this.optionsTemplate, this.options));
+        }
     }
 
     ngOnInit() {

@@ -101,6 +101,10 @@ export class InputHandler {
         }, 1);
     }
 
+    updateOptions(options: any): void {
+        this.inputService.updateOptions(options);
+    }
+
     getOnModelChange(): Function {
         return this.onModelChange;
     }
