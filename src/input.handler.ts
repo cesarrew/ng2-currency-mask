@@ -28,9 +28,10 @@ export class InputHandler {
         let storedRawValueLength = this.inputService.storedRawValue.length;
         this.inputService.rawValue = this.inputService.storedRawValue;
 
-        if (rawValueLength != rawValueSelectionStart || Math.abs(rawValueLength - storedRawValueLength) != 1) {
-            return;
-        }
+        /*if (rawValueLength != rawValueSelectionStart || Math.abs(rawValueLength - storedRawValueLength) != 1) {
+            //return;
+            // For some reason with this IF, the plugin stop working on android devices (ionic2)
+        }*/
 
         if (rawValueLength < storedRawValueLength) {
             this.inputService.removeNumber(8);
