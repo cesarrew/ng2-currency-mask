@@ -18,8 +18,12 @@ export class InputService {
 
     applyMask(isNumber: boolean, rawValue: string): string {
         let {allowNegative, precision, thousands, decimal} = this.options;
-        rawValue = isNumber ? new Number(rawValue).toFixed(precision) : rawValue;  
+        rawValue = isNumber ? new Number(rawValue).toFixed(precision) : rawValue;
         let onlyNumbers = rawValue.replace(/[^0-9]/g, "");
+
+        // Do not apply any mask in case of empty input
+        if (!onlyNumbers) return "";
+
         let integerPart = onlyNumbers.slice(0, onlyNumbers.length - precision).replace(/^0*/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, thousands);
 
         if (integerPart == "") {
@@ -48,13 +52,13 @@ export class InputService {
         if (this.options.decimal) {
             value = value.replace(this.options.decimal, ".");
         }
-        
+
         return parseFloat(value);
     }
 
     changeToNegative(): void {
         if (this.options.allowNegative && this.rawValue != "" && this.rawValue.charAt(0) != "-" && this.value != 0) {
-            this.rawValue = "-" + this.rawValue; 
+            this.rawValue = "-" + this.rawValue;
         }
     }
 
