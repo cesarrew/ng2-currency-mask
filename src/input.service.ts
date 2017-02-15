@@ -72,19 +72,8 @@ export class InputService {
     }
 
     removeNumber(keyCode: number): void {
-        let selectionStart = this.inputSelection.selectionStart;
-        let selectionEnd = this.inputSelection.selectionEnd;
-
-        if (selectionStart == selectionEnd) {
-            if (keyCode === 8) {
-                let lastNumber = this.rawValue.split("").reverse().join("").search(/\d/);
-                selectionStart = this.rawValue.length - lastNumber - 1;
-                selectionEnd = selectionStart + 1;
-            } else {
-                selectionEnd += 1;
-            }
-        }
-
+        let selectionStart = keyCode === 8 ? this.inputSelection.selectionStart - 1 : this.inputSelection.selectionStart;
+        let selectionEnd = keyCode === 46 || keyCode === 63272 ? this.inputSelection.selectionEnd + 1 : this.inputSelection.selectionEnd;
         this.rawValue = this.rawValue.substring(0, selectionStart) + this.rawValue.substring(selectionEnd, this.rawValue.length);
         this.updateFieldValue(selectionStart);
     }

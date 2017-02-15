@@ -16,7 +16,8 @@ export class InputHandler {
 
     handleCut(event: any): void {
         setTimeout(() => {
-            this.setValue(0);
+            this.inputService.updateFieldValue();
+            this.setValue(this.inputService.value);
             this.onModelChange(this.inputService.value);
         }, 1);
     }
@@ -59,14 +60,13 @@ export class InputHandler {
     handleKeydown(event: any): void {
         let keyCode = event.which || event.charCode || event.keyCode;
 
-        if (keyCode === undefined) {
-            return;
-        }
-
         if (keyCode === 8 || keyCode === 46 || keyCode === 63272) {
             event.preventDefault();
-            this.inputService.removeNumber(keyCode);
-            this.onModelChange(this.inputService.value);
+
+            if (this.inputService.inputSelection.selectionEnd === this.inputService.inputSelection.selectionStart) {
+                this.inputService.removeNumber(keyCode);
+                this.onModelChange(this.inputService.value);
+            }
         }
     }
 
@@ -87,7 +87,9 @@ export class InputHandler {
                     return;
                 }
 
-                this.inputService.addNumber(keyCode);
+                if (this.inputService.inputSelection.selectionEnd === this.inputService.inputSelection.selectionStart) {
+                    this.inputService.addNumber(keyCode);
+                }
         }
 
         event.preventDefault();
@@ -97,6 +99,7 @@ export class InputHandler {
     handlePaste(event: any): void {
         setTimeout(() => {
             this.inputService.updateFieldValue();
+            this.setValue(this.inputService.value);
             this.onModelChange(this.inputService.value);
         }, 1);
     }

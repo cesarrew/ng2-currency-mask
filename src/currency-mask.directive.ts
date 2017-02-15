@@ -50,7 +50,9 @@ export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccesso
 
     @HostListener("click", ["$event"])
     handleClick(event: any) {
-        this.inputHandler.handleClick(event);
+        if (this.isChromeAndroid()) {
+            this.inputHandler.handleClick(event);
+        }
     }
 
     @HostListener("cut", ["$event"])
