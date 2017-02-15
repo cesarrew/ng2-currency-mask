@@ -16,7 +16,7 @@ export class InputHandler {
 
     handleCut(event: any): void {
         setTimeout(() => {
-            this.inputService.updateFieldValue();
+            this.setValue(0);
             this.onModelChange(this.inputService.value);
         }, 1);
     }

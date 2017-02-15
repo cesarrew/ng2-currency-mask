@@ -9,6 +9,10 @@ export class InputService {
     }
 
     addNumber(keyCode: number): void {
+        if (!this.rawValue) {
+            this.rawValue = this.applyMask(false, "0");
+        }
+
         let keyChar = String.fromCharCode(keyCode);
         let selectionStart = this.inputSelection.selectionStart;
         let selectionEnd = this.inputSelection.selectionEnd;
@@ -21,8 +25,9 @@ export class InputService {
         rawValue = isNumber ? new Number(rawValue).toFixed(precision) : rawValue;
         let onlyNumbers = rawValue.replace(/[^0-9]/g, "");
 
-        // Do not apply any mask in case of empty input
-        if (!onlyNumbers) return "";
+        if (!onlyNumbers) {
+            return "";
+        }
 
         let integerPart = onlyNumbers.slice(0, onlyNumbers.length - precision).replace(/^0*/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, thousands);
 
