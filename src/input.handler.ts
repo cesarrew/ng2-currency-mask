@@ -15,7 +15,7 @@ export class InputHandler {
             this.inputService.updateFieldValue();
             this.setValue(this.inputService.value);
             this.onModelChange(this.inputService.value);
-        }, 1);
+        }, 0);
     }
 
     handleInput(event: any): void {
@@ -26,6 +26,7 @@ export class InputHandler {
         this.inputService.rawValue = this.inputService.storedRawValue;
 
         if (rawValueLength != rawValueSelectionStart || Math.abs(rawValueLength - storedRawValueLength) != 1) {
+            this.setCursorPosition(event);
             return;
         }
 
@@ -50,11 +51,8 @@ export class InputHandler {
             }
         }
 
+        this.setCursorPosition(event);
         this.onModelChange(this.inputService.value);
-
-        setTimeout(function () {
-            event.target.setSelectionRange(event.target.value.length, event.target.value.length);
-        }, 0);
     }
 
     handleKeydown(event: any): void {
@@ -126,5 +124,11 @@ export class InputHandler {
 
     setValue(value: number): void {
         this.inputService.value = value;
+    }
+
+    private setCursorPosition(event: any): void {
+        setTimeout(function () {
+            event.target.setSelectionRange(event.target.value.length, event.target.value.length);
+        }, 0);
     }
 }

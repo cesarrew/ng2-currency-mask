@@ -21,7 +21,7 @@ export class InputService {
     }
 
     applyMask(isNumber: boolean, rawValue: string): string {
-        let {allowNegative, precision, thousands, decimal} = this.options;
+        let {allowNegative, decimal, precision, prefix, suffix, thousands} = this.options;
         rawValue = isNumber ? new Number(rawValue).toFixed(precision) : rawValue;
         let onlyNumbers = rawValue.replace(/[^0-9]/g, "");
 
@@ -44,11 +44,11 @@ export class InputService {
 
         let isZero = parseInt(integerPart) == 0 && (parseInt(decimalPart) == 0 || decimalPart == "");
         let operator = (rawValue.indexOf("-") > -1 && allowNegative && !isZero) ? "-" : "";
-        return operator + this.options.prefix + newRawValue;
+        return operator + prefix + newRawValue + suffix;
     }
 
     clearMask(rawValue: string): number {
-        let value = (rawValue || "0").replace(this.options.prefix, "");
+        let value = (rawValue || "0").replace(this.options.prefix, "").replace(this.options.suffix, "");
 
         if (this.options.thousands) {
             value = value.replace(new RegExp("\\" + this.options.thousands, "g"), "");
@@ -72,8 +72,16 @@ export class InputService {
     }
 
     removeNumber(keyCode: number): void {
-        let selectionStart = keyCode === 8 ? this.inputSelection.selectionStart - 1 : this.inputSelection.selectionStart;
-        let selectionEnd = keyCode === 46 || keyCode === 63272 ? this.inputSelection.selectionEnd + 1 : this.inputSelection.selectionEnd;
+        let selectionEnd = this.inputSelection.selectionEnd;
+        let selectionStart = this.inputSelection.selectionStart;
+
+        if (selectionStart > this.rawValue.length - this.options.suffix.length) {
+            selectionEnd = this.rawValue.length - this.options.suffix.length;
+            selectionStart = this.rawValue.length - this.options.suffix.length;
+        }
+
+        selectionEnd = keyCode === 46 || keyCode === 63272 ? selectionEnd + 1 : selectionEnd;
+        selectionStart = keyCode === 8 ? selectionStart - 1 : selectionStart;
         this.rawValue = this.rawValue.substring(0, selectionStart) + this.rawValue.substring(selectionEnd, this.rawValue.length);
         this.updateFieldValue(selectionStart);
     }

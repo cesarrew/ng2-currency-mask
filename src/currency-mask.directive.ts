@@ -23,11 +23,12 @@ export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccesso
     optionsTemplate = {
         align: "right",
         allowNegative: true,
+        allowZero: true,
+        decimal: ".",
         precision: 2,
         prefix: "$ ",
-        thousands: ",",
-        decimal: ".",
-        allowZero: true
+        suffix: "",
+        thousands: ","
     };
 
     constructor(private elementRef: ElementRef, private keyValueDiffers: KeyValueDiffers) {

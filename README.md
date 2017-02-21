@@ -52,9 +52,10 @@ Available options:
 
  * `align` - Text alignment in input. (default: `right`)
  * `allowNegative` - If `true` can input negative values.  (default: `true`)
- * `precision` - Number of decimal places (default: `2`)
- * `thousands` - Separator of thousands (default: `','`)
  * `decimal` -  Separator of decimals (default: `'.'`)
- * `prefix` - Money preffix (default: `'$ '`)
+ * `precision` - Number of decimal places (default: `2`)
+ * `prefix` - Money prefix (default: `'$ '`)
+ * `suffix` - Money suffix (default: `''`)
+ * `thousands` - Separator of thousands (default: `','`)
 
 ## Questions? Open a Issue!
