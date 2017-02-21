@@ -78,12 +78,6 @@ export class InputService {
         this.updateFieldValue(selectionStart);
     }
 
-    resetSelection(): void {
-        if (this.htmlInputElement.setSelectionRange) {
-            this.htmlInputElement.setSelectionRange(this.rawValue.length, this.rawValue.length);
-        }
-    }
-
     updateFieldValue(selectionStart?: number): void {
         let newRawValue = this.applyMask(false, this.rawValue || "");
         selectionStart = selectionStart == undefined ? this.rawValue.length : selectionStart;

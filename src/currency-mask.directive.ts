@@ -48,13 +48,6 @@ export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccesso
         this.inputHandler = new InputHandler(this.elementRef.nativeElement, Object.assign({}, this.optionsTemplate, this.options));
     }
 
-    @HostListener("click", ["$event"])
-    handleClick(event: any) {
-        if (this.isChromeAndroid()) {
-            this.inputHandler.handleClick(event);
-        }
-    }
-
     @HostListener("cut", ["$event"])
     handleCut(event: any) {
         if (!this.isChromeAndroid()) {
@@ -78,7 +71,9 @@ export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccesso
 
     @HostListener("keypress", ["$event"])
     handleKeypress(event: any) {
-        this.inputHandler.handleKeypress(event);
+        if (!this.isChromeAndroid()) {
+            this.inputHandler.handleKeypress(event);
+        }
     }
 
     @HostListener("paste", ["$event"])

@@ -10,10 +10,6 @@ export class InputHandler {
         this.inputService = new InputService(htmlInputElement, options);
     }
 
-    handleClick(event: any): void {
-        this.inputService.resetSelection();
-    }
-
     handleCut(event: any): void {
         setTimeout(() => {
             this.inputService.updateFieldValue();
@@ -55,6 +51,10 @@ export class InputHandler {
         }
 
         this.onModelChange(this.inputService.value);
+
+        setTimeout(function () {
+            event.target.setSelectionRange(event.target.value.length, event.target.value.length);
+        }, 0);
     }
 
     handleKeydown(event: any): void {
