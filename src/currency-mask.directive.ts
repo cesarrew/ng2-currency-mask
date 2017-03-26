@@ -18,7 +18,7 @@ export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccesso
     @Input() options: any = {};
 
     inputHandler: InputHandler;
-    keyValueDiffer: KeyValueDiffer;
+    keyValueDiffer: KeyValueDiffer<any, any>;
 
     optionsTemplate = {
         align: "right",
@@ -41,12 +41,12 @@ export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccesso
 
     ngDoCheck() {
         if (this.keyValueDiffer.diff(this.options)) {
-            this.inputHandler.updateOptions(Object.assign({}, this.optionsTemplate, this.options));
+            this.inputHandler.updateOptions((<any>Object).assign({}, this.optionsTemplate, this.options));
         }
     }
 
     ngOnInit() {
-        this.inputHandler = new InputHandler(this.elementRef.nativeElement, Object.assign({}, this.optionsTemplate, this.options));
+        this.inputHandler = new InputHandler(this.elementRef.nativeElement, (<any>Object).assign({}, this.optionsTemplate, this.options));
     }
 
     @HostListener("cut", ["$event"])
