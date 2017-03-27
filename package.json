@@ -1,40 +1,40 @@
 {
-  "name": "ng2-currency-mask",
-  "version": "1.5.1",
-  "description": "A very simple currency mask directive that allows using a number attribute with the ngModel.",
-  "scripts": {
-    "prepublish": "ngc"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/cesarrew/ng2-currency-mask.git"
-  },
-  "keywords": [
-    "angular",
-    "angular2",
-    "angular4",
-    "currency",
-    "mask",
-    "model",
-    "money",
-    "ng2",
-    "number"
-  ],
-  "author": "César Mendonça",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/cesarrew/ng2-currency-mask/issues"
-  },
-  "homepage": "https://github.com/cesarrew/ng2-currency-mask",
-  "devDependencies": {
-    "@angular/common": "4.0.0",
-    "@angular/compiler": "4.0.0",
-    "@angular/compiler-cli": "4.0.0",
-    "@angular/core": "4.0.0",
-    "@angular/forms": "4.0.0",
-    "@angular/platform-browser": "4.0.0",
-    "rxjs": "5.0.1",
-    "typescript": "2.2.1",
-    "zone.js": "0.8.5"
-  }
+    "name": "ng2-currency-mask",
+    "version": "1.5.1",
+    "description": "A very simple currency mask directive that allows using a number attribute with the ngModel.",
+    "scripts": {
+        "prepublish": "ngc"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/cesarrew/ng2-currency-mask.git"
+    },
+    "keywords": [
+        "angular",
+        "angular2",
+        "angular4",
+        "currency",
+        "mask",
+        "model",
+        "money",
+        "ng2",
+        "number"
+    ],
+    "author": "César Mendonça",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/cesarrew/ng2-currency-mask/issues"
+    },
+    "homepage": "https://github.com/cesarrew/ng2-currency-mask",
+    "devDependencies": {
+        "@angular/common": "4.0.0",
+        "@angular/compiler": "4.0.0",
+        "@angular/compiler-cli": "4.0.0",
+        "@angular/core": "4.0.0",
+        "@angular/forms": "4.0.0",
+        "@angular/platform-browser": "4.0.0",
+        "rxjs": "5.0.1",
+        "typescript": "2.2.1",
+        "zone.js": "0.8.5"
+    }
 }
