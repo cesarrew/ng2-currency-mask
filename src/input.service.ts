@@ -21,7 +21,7 @@ export class InputService {
     }
 
     applyMask(isNumber: boolean, rawValue: string): string {
-        let {allowNegative, decimal, precision, prefix, suffix, thousands} = this.options;
+        let { allowNegative, decimal, precision, prefix, suffix, thousands } = this.options;
         rawValue = isNumber ? new Number(rawValue).toFixed(precision) : rawValue;
         let onlyNumbers = rawValue.replace(/[^0-9]/g, "");
 
@@ -80,8 +80,8 @@ export class InputService {
             selectionStart = this.rawValue.length - this.options.suffix.length;
         }
 
-        selectionEnd = keyCode === 46 || keyCode === 63272 ? selectionEnd + 1 : selectionEnd;
-        selectionStart = keyCode === 8 ? selectionStart - 1 : selectionStart;
+        selectionEnd = keyCode == 46 || keyCode == 63272 ? selectionEnd + 1 : selectionEnd;
+        selectionStart = keyCode == 8 ? selectionStart - 1 : selectionStart;
         this.rawValue = this.rawValue.substring(0, selectionStart) + this.rawValue.substring(selectionEnd, this.rawValue.length);
         this.updateFieldValue(selectionStart);
     }
