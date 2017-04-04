@@ -1,40 +1,40 @@
 {
-    "name": "ng2-currency-mask",
-    "version": "2.0.0",
-    "description": "A very simple currency mask directive that allows using a number attribute with the ngModel.",
-    "scripts": {
-        "prepublish": "ngc"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/cesarrew/ng2-currency-mask.git"
-    },
-    "keywords": [
-        "angular",
-        "angular2",
-        "angular4",
-        "currency",
-        "mask",
-        "model",
-        "money",
-        "ng2",
-        "number"
-    ],
-    "author": "César Mendonça",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/cesarrew/ng2-currency-mask/issues"
-    },
-    "homepage": "https://github.com/cesarrew/ng2-currency-mask",
-    "devDependencies": {
-        "@angular/common": "2.4.9",
-        "@angular/compiler": "2.4.9",
-        "@angular/compiler-cli": "2.4.9",
-        "@angular/core": "2.4.9",
-        "@angular/forms": "2.4.9",
-        "@angular/platform-browser": "2.4.9",
-        "rxjs": "5.0.1",
-        "typescript": "2.0.10",
-        "zone.js": "0.7.2"
-    }
+  "name": "ng2-currency-mask",
+  "version": "2.0.1",
+  "description": "A very simple currency mask directive that allows using a number attribute with the ngModel.",
+  "scripts": {
+    "prepublish": "ngc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cesarrew/ng2-currency-mask.git"
+  },
+  "keywords": [
+    "angular",
+    "angular2",
+    "angular4",
+    "currency",
+    "mask",
+    "model",
+    "money",
+    "ng2",
+    "number"
+  ],
+  "author": "César Mendonça",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cesarrew/ng2-currency-mask/issues"
+  },
+  "homepage": "https://github.com/cesarrew/ng2-currency-mask",
+  "devDependencies": {
+    "@angular/common": "2.4.9",
+    "@angular/compiler": "2.4.9",
+    "@angular/compiler-cli": "2.4.9",
+    "@angular/core": "2.4.9",
+    "@angular/forms": "2.4.9",
+    "@angular/platform-browser": "2.4.9",
+    "rxjs": "5.0.1",
+    "typescript": "2.0.10",
+    "zone.js": "0.7.2"
+  }
 }
