@@ -58,11 +58,17 @@ export class InputHandler {
     handleKeydown(event: any): void {
         let keyCode = event.which || event.charCode || event.keyCode;
 
-        if (keyCode === 8 || keyCode === 46 || keyCode === 63272) {
+        if (keyCode == 8 || keyCode == 46 || keyCode == 63272) {
             event.preventDefault();
+            let selectionRangeLength = Math.abs(this.inputService.inputSelection.selectionEnd - this.inputService.inputSelection.selectionStart);
 
-            if (this.inputService.inputSelection.selectionEnd === this.inputService.inputSelection.selectionStart) {
+            if (selectionRangeLength == 0) {
                 this.inputService.removeNumber(keyCode);
+                this.onModelChange(this.inputService.value);
+            }
+
+            if (selectionRangeLength == this.inputService.rawValue.length) {
+                this.setValue(0);
                 this.onModelChange(this.inputService.value);
             }
         }
@@ -81,11 +87,14 @@ export class InputHandler {
                 this.inputService.changeToNegative();
                 break;
             default:
-                if (!this.inputService.canInputMoreNumbers) {
-                    return;
-                }
+                let selectionRangeLength = Math.abs(this.inputService.inputSelection.selectionEnd - this.inputService.inputSelection.selectionStart);
 
-                if (this.inputService.inputSelection.selectionEnd === this.inputService.inputSelection.selectionStart) {
+                if (this.inputService.canInputMoreNumbers && (selectionRangeLength == 0 || selectionRangeLength == this.inputService.rawValue.length)) {
+                    if (selectionRangeLength == this.inputService.rawValue.length) {
+                        this.setValue(0);
+                    }
+
+
                     this.inputService.addNumber(keyCode);
                 }
         }
