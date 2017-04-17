@@ -79,6 +79,7 @@ export class InputHandler {
 
         switch (keyCode) {
             case undefined:
+            case 13:
                 return;
             case 43:
                 this.inputService.changeToPositive();
