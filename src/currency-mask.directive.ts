@@ -18,7 +18,7 @@ export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccesso
     @Input() options: any = {};
 
     inputHandler: InputHandler;
-    keyValueDiffer: KeyValueDiffer<any, any>;
+    keyValueDiffer: KeyValueDiffer;
 
     optionsTemplate = {
         align: "right",
