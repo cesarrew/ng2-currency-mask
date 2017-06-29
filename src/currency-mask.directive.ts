@@ -50,6 +50,11 @@ export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccesso
         this.inputHandler = new InputHandler(this.elementRef.nativeElement, Object.assign({}, this.optionsTemplate, this.options));
     }
 
+    @HostListener("blur", ["$event"])
+    handleBlur(event: any) {
+        this.inputHandler.getOnModelTouched().apply(event);
+    }
+
     @HostListener("cut", ["$event"])
     handleCut(event: any) {
         if (!this.isChromeAndroid()) {
