@@ -1,4 +1,4 @@
-import { AfterViewInit, Directive, DoCheck, ElementRef, forwardRef, HostListener, KeyValueDiffer, KeyValueDiffers, Input, OnInit } from "@angular/core";
+import { AfterViewInit, Directive, DoCheck, ElementRef, forwardRef, HostListener, KeyValueDiffer, KeyValueDiffers, Input, OnInit, Renderer } from "@angular/core";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 
 import { InputHandler } from "./input.handler";
@@ -31,17 +31,24 @@ export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccesso
         thousands: ","
     };
 
-    constructor(private elementRef: ElementRef, private keyValueDiffers: KeyValueDiffers) {
+    constructor(
+        private elementRef: ElementRef,
+        private keyValueDiffers: KeyValueDiffers,
+        private renderer: Renderer
+    ) {
         this.keyValueDiffer = keyValueDiffers.find({}).create(null);
     }
 
     ngAfterViewInit() {
-        this.elementRef.nativeElement.style.textAlign = this.options.align ? this.options.align : this.optionsTemplate.align;
+        let align = this.options.align ? this.options.align : this.optionsTemplate.align;
+        this.renderer.setElementStyle(this.elementRef.nativeElement, "textAlign", align);
     }
 
     ngDoCheck() {
         if (this.keyValueDiffer.diff(this.options)) {
-            this.elementRef.nativeElement.style.textAlign = this.options.align ? this.options.align : this.optionsTemplate.align;
+            let align = this.options.align ? this.options.align : this.optionsTemplate.align;
+            this.renderer.setElementStyle(this.elementRef.nativeElement, "textAlign", align);
+
             this.inputHandler.updateOptions((<any>Object).assign({}, this.optionsTemplate, this.options));
         }
     }
