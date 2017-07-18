@@ -10,7 +10,7 @@ export const CURRENCYMASKDIRECTIVE_VALUE_ACCESSOR: any = {
 };
 
 @Directive({
-    selector: "input[currencyMask]",
+    selector: "[currencyMask]",
     providers: [CURRENCYMASKDIRECTIVE_VALUE_ACCESSOR]
 })
 export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccessor, DoCheck, OnInit {
