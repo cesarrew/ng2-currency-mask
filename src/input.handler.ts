@@ -79,6 +79,7 @@ export class InputHandler {
 
         switch (keyCode) {
             case undefined:
+            case 9:
             case 13:
                 return;
             case 43:
@@ -88,13 +89,12 @@ export class InputHandler {
                 this.inputService.changeToNegative();
                 break;
             default:
-                let selectionRangeLength = Math.abs(this.inputService.inputSelection.selectionEnd - this.inputService.inputSelection.selectionStart);
+                if (this.inputService.canInputMoreNumbers) {
+                    let selectionRangeLength = Math.abs(this.inputService.inputSelection.selectionEnd - this.inputService.inputSelection.selectionStart);
 
-                if (this.inputService.canInputMoreNumbers && (selectionRangeLength == 0 || selectionRangeLength == this.inputService.rawValue.length)) {
                     if (selectionRangeLength == this.inputService.rawValue.length) {
                         this.setValue(0);
                     }
-
 
                     this.inputService.addNumber(keyCode);
                 }
