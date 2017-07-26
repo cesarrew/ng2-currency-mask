@@ -1,4 +1,10 @@
-import { AfterViewInit, Directive, DoCheck, ElementRef, forwardRef, HostListener, KeyValueDiffer, KeyValueDiffers, Input, OnInit } from "@angular/core";
+import { CurrencyMaskConfig, CURRENCY_MASK_CONFIG_TOKEN } from './currency-mask-config';
+import {
+    AfterViewInit, Directive, DoCheck,
+    ElementRef, forwardRef, HostListener, KeyValueDiffer,
+    KeyValueDiffers, Input, OnInit, Inject,
+    Optional
+} from "@angular/core";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 
 import { InputHandler } from "./input.handler";
@@ -31,8 +37,14 @@ export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccesso
         thousands: ","
     };
 
-    constructor(private elementRef: ElementRef, private keyValueDiffers: KeyValueDiffers) {
+    constructor(
+        private elementRef: ElementRef,
+        private keyValueDiffers: KeyValueDiffers,
+        @Optional() @Inject(CURRENCY_MASK_CONFIG_TOKEN) private currencyMaskConfig: CurrencyMaskConfig) {
         this.keyValueDiffer = keyValueDiffers.find({}).create(null);
+
+        //  use currencyMaskConfig if is not null, else use the internal config (optionsTemplate)
+        this.optionsTemplate = this.currencyMaskConfig || this.optionsTemplate;
     }
 
     ngAfterViewInit() {
