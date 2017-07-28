@@ -21,7 +21,7 @@ import { CurrencyMaskModule } from "ng2-currency-mask";
 
 @NgModule({
     imports: [
-        //... you others modules
+        ...
         CurrencyMaskModule
     ],
     declarations: [...],
@@ -56,5 +56,36 @@ Available options:
  * `prefix` - Money prefix (default: `'$ '`)
  * `suffix` - Money suffix (default: `''`)
  * `thousands` - Separator of thousands (default: `','`)
+
+You can also set options globally...
+
+```ts
+import { CurrencyMaskModule } from "ng2-currency-mask";
+import { CurrencyMaskConfig, CURRENCY_MASK_CONFIG } from "ng2-currency-mask/src/currency-mask.config";
+
+export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
+    align: "right",
+    allowNegative: true,
+    allowZero: true,
+    decimal: ",",
+    precision: 2,
+    prefix: "R$ ",
+    suffix: "",
+    thousands: "."
+};
+
+@NgModule({
+    imports: [
+        ...
+        CurrencyMaskModule
+    ],
+    declarations: [...],
+    providers: [
+        { provide: CURRENCY_MASK_CONFIG, useValue: CustomCurrencyMaskConfig }
+    ],
+    bootstrap: [AppComponent]
+})
+export class AppModule {}
+```
 
 ## Questions? Open a Issue!
