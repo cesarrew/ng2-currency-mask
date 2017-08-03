@@ -65,8 +65,8 @@ export class InputService {
         if (this.options.allowNegative && this.rawValue != "" && this.rawValue.charAt(0) != "-" && this.value != 0) {
             this.rawValue = "-" + this.rawValue;
         } else if(this.options.allowNegativeZero && (this.rawValue == "" || this.value == 0)) {
-			this.rawValue = this.applyMask(false, "-0");
-		}
+            this.rawValue = this.applyMask(false, "-0");
+        }
     }
 
     changeToPositive(): void {
