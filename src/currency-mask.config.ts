@@ -4,6 +4,7 @@ export interface CurrencyMaskConfig {
 
     align: string;
     allowNegative: boolean;
+    allowNegativeZero: boolean;
     allowZero: boolean;
     decimal: string;
     precision: number;
