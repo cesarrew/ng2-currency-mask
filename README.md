@@ -89,3 +89,46 @@ export class AppModule {}
 ```
 
 ## Questions? Open a Issue!
+
+
+## Quick fixes
+
+### Ionic 2-3
+
+Input not working on mobile keyboard
+
+```sh
+<!-- Change the type to 'tel' -->
+    <input type="tel" currencyMask  
+	    [(ngModel)]="formEntradas[m.key][t]"
+	    [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" 
+	/>
+```
+
+Input focus get hide by the mobile keyboard
+
+on HTML
+```sh
+<!-- Change the type to 'tel' -->
+    <input type="tel" currencyMask  
+	    [(ngModel)]="yourVar"
+	    [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" 
+        [id]="'yourInputId'+index" 
+	    (focus)="scrollTo(index)"
+	/>
+```
+
+on .ts
+```sh
+import { Content } from 'ionic-angular';
+
+export class...
+
+  @ViewChild(Content) content: Content;
+  
+  scrollTo(index) {
+    let yOffset = document.getElementById('yourInputId'+index).offsetTop;
+    this.content.scrollTo(0, yOffset+20)
+  }
+```
+
