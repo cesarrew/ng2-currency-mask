@@ -36,13 +36,19 @@ export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccesso
     }
 
     ngAfterViewInit() {
-        this.elementRef.nativeElement.style.textAlign = this.options.align ? this.options.align : this.optionsTemplate.align;
+        if(this && this.elementRef && this.elementRef.nativeElement && this.elementRef.nativeElement.style) {
+            this.elementRef.nativeElement.style.textAlign = this.options.align ? this.options.align : this.optionsTemplate.align;
+        }
     }
 
     ngDoCheck() {
         if (this.keyValueDiffer.diff(this.options)) {
-            this.elementRef.nativeElement.style.textAlign = this.options.align ? this.options.align : this.optionsTemplate.align;
-            this.inputHandler.updateOptions(Object.assign({}, this.optionsTemplate, this.options));
+            if(this && this.elementRef && this.elementRef.nativeElement && this.elementRef.nativeElement.style) {
+                this.elementRef.nativeElement.style.textAlign = this.options.align ? this.options.align : this.optionsTemplate.align;
+            }
+            if(this && this.inputHandler) {
+                this.inputHandler.updateOptions(Object.assign({}, this.optionsTemplate, this.options));
+            }
         }
     }
 
@@ -52,7 +58,9 @@ export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccesso
 
     @HostListener("blur", ["$event"])
     handleBlur(event: any) {
-        this.inputHandler.getOnModelTouched().apply(event);
+        if(this && this.inputHandler) {
+            this.inputHandler.getOnModelTouched().apply(event);
+        }
     }
 
     @HostListener("cut", ["$event"])
@@ -95,11 +103,15 @@ export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccesso
     }
 
     registerOnChange(callbackFunction: Function): void {
-        this.inputHandler.setOnModelChange(callbackFunction);
+        if(this && this.inputHandler) {
+            this.inputHandler.setOnModelChange(callbackFunction);
+        }
     }
 
     registerOnTouched(callbackFunction: Function): void {
-        this.inputHandler.setOnModelTouched(callbackFunction);
+        if(this && this.inputHandler) {
+            this.inputHandler.setOnModelTouched(callbackFunction);
+        }
     }
 
     setDisabledState(value: boolean): void {
@@ -107,6 +119,8 @@ export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccesso
     }
 
     writeValue(value: number): void {
-        this.inputHandler.setValue(value);
+        if(this && this.inputHandler) {
+            this.inputHandler.setValue(value);
+        }
     }
 }
