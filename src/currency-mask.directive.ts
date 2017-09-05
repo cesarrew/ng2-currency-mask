@@ -70,7 +70,7 @@ export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccesso
     @HostListener("input", ["$event"])
     handleInput(event: any) {
         if (this.isChromeAndroid()) {
-            this.inputHandler.handleInput(event, this.isSamsungChromeAndroid());
+            this.inputHandler.handleInput(event);
         }
     }
 
@@ -97,10 +97,6 @@ export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccesso
 
     isChromeAndroid(): boolean {
         return /chrome/i.test(navigator.userAgent) && /android/i.test(navigator.userAgent);
-    }
-
-    isSamsungChromeAndroid(): boolean {
-        return navigator.userAgent.match(/SAMSUNG|SGH-|GT-[I|P|N]|SM-|SHV-E|SCH-|SPH-L/i) ? true : false;
     }
 
     registerOnChange(callbackFunction: Function): void {

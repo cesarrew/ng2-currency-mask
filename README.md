@@ -88,4 +88,37 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
 export class AppModule {}
 ```
 
+## Quick fixes
+
+### Ionic 2-3
+
+Input not working on mobile keyboard
+
+```html
+<!-- Change the type to 'tel' -->
+    <input currencyMask type="tel" [(ngModel)]="value" />
+```
+
+Input focus get hide by the mobile keyboard
+
+on HTML
+```html
+<!-- Change the type to 'tel' -->
+    <input currencyMask type="tel" [(ngModel)]="value" [id]="'yourInputId' + index" (focus)="scrollTo(index)" />
+```
+
+on .ts
+```ts
+import { Content } from 'ionic-angular';
+
+export class...
+
+    @ViewChild(Content) content: Content;
+  
+    scrollTo(index) {
+        let yOffset = document.getElementById('yourInputId' + index).offsetTop;
+        this.content.scrollTo(0, yOffset + 20);
+    }
+```
+
 ## Questions? Open a Issue!

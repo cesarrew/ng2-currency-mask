@@ -18,15 +18,14 @@ export class InputHandler {
         }, 0);
     }
 
-    //TODO: Check if is possible to get selectionEnd instead selectionStart in all devices.
-    handleInput(event: any, isGalaxy: boolean): void {
+    handleInput(event: any): void {
         let keyCode = this.inputService.rawValue.charCodeAt(this.inputService.rawValue.length - 1);
         let rawValueLength = this.inputService.rawValue.length;
-        let rawValueSelectionStart = isGalaxy ? this.inputService.inputSelection.selectionEnd : this.inputService.inputSelection.selectionStart;
+        let rawValueSelectionEnd = this.inputService.inputSelection.selectionEnd;
         let storedRawValueLength = this.inputService.storedRawValue.length;
         this.inputService.rawValue = this.inputService.storedRawValue;
 
-        if (rawValueLength != rawValueSelectionStart || Math.abs(rawValueLength - storedRawValueLength) != 1) {
+        if (rawValueLength != rawValueSelectionEnd || Math.abs(rawValueLength - storedRawValueLength) != 1) {
             this.setCursorPosition(event);
             return;
         }
