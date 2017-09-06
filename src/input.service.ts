@@ -47,7 +47,7 @@ export class InputService {
         return operator + prefix + newRawValue + suffix;
     }
 
-    clearMask(rawValue: string): string {
+    clearMask(rawValue: string): number {
         let value = (rawValue || "0").replace(this.options.prefix, "").replace(this.options.suffix, "");
 
         if (this.options.thousands) {
@@ -58,7 +58,7 @@ export class InputService {
             value = value.replace(this.options.decimal, ".");
         }
 
-        return value;
+        return parseFloat(value);
     }
 
     changeToNegative(): void {
