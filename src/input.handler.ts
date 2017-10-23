@@ -31,7 +31,11 @@ export class InputHandler {
         }
 
         if (rawValueLength < storedRawValueLength) {
-            this.inputService.removeNumber(8);
+            if (this.inputService.value != 0) {
+                this.inputService.removeNumber(8);
+            } else {
+                this.setValue(null);
+            }
         }
 
         if (rawValueLength > storedRawValueLength) {
@@ -43,7 +47,7 @@ export class InputHandler {
                     this.inputService.changeToNegative();
                     break;
                 default:
-                    if (!this.inputService.canInputMoreNumbers) {
+                    if (!this.inputService.canInputMoreNumbers || (isNaN(this.inputService.value) && String.fromCharCode(keyCode).match(/\d/) == null)) {
                         return;
                     }
 
@@ -62,13 +66,13 @@ export class InputHandler {
             event.preventDefault();
             let selectionRangeLength = Math.abs(this.inputService.inputSelection.selectionEnd - this.inputService.inputSelection.selectionStart);
 
-            if (selectionRangeLength == 0) {
-                this.inputService.removeNumber(keyCode);
+            if (selectionRangeLength == this.inputService.rawValue.length || this.inputService.value == 0) {
+                this.setValue(null);
                 this.onModelChange(this.inputService.value);
             }
 
-            if (selectionRangeLength == this.inputService.rawValue.length) {
-                this.setValue(0);
+            if (selectionRangeLength == 0 && !isNaN(this.inputService.value)) {
+                this.inputService.removeNumber(keyCode);
                 this.onModelChange(this.inputService.value);
             }
         }
@@ -95,13 +99,7 @@ export class InputHandler {
                 this.inputService.changeToNegative();
                 break;
             default:
-                if (this.inputService.canInputMoreNumbers) {
-                    let selectionRangeLength = Math.abs(this.inputService.inputSelection.selectionEnd - this.inputService.inputSelection.selectionStart);
-
-                    if (selectionRangeLength == this.inputService.rawValue.length) {
-                        this.setValue(0);
-                    }
-
+                if (this.inputService.canInputMoreNumbers && (!isNaN(this.inputService.value) || String.fromCharCode(keyCode).match(/\d/) != null)) {
                     this.inputService.addNumber(keyCode);
                 }
         }

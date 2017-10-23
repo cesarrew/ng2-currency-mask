@@ -48,7 +48,11 @@ export class InputService {
     }
 
     clearMask(rawValue: string): number {
-        let value = (rawValue || "0").replace(this.options.prefix, "").replace(this.options.suffix, "");
+        if (rawValue == null) {
+            return null;
+        }
+
+        let value = rawValue.replace(this.options.prefix, "").replace(this.options.suffix, "");
 
         if (this.options.thousands) {
             value = value.replace(new RegExp("\\" + this.options.thousands, "g"), "");
