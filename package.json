@@ -1,6 +1,6 @@
 {
   "name": "ng2-currency-mask",
-  "version": "4.4.0",
+  "version": "4.4.1",
   "description": "A very simple currency mask directive that allows using a number attribute with the ngModel.",
   "scripts": {
     "prepublish": "ngc"
