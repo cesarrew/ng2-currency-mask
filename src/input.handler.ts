@@ -79,7 +79,7 @@ export class InputHandler {
     }
 
     handleKeypress(event: any): void {
-        let keyCode = event.which || event.charCode || event.keyCode;
+        let keyCode = event.which || event.keyCode;
 
         switch (keyCode) {
             case undefined:
@@ -92,6 +92,12 @@ export class InputHandler {
             case 39:
             case 40:
                 return;
+            default:
+        }
+
+        let charCode = keyCode || event.charCode;
+
+        switch (charCode) {
             case 43:
                 this.inputService.changeToPositive();
                 break;
@@ -99,8 +105,8 @@ export class InputHandler {
                 this.inputService.changeToNegative();
                 break;
             default:
-                if (this.inputService.canInputMoreNumbers && (!isNaN(this.inputService.value) || String.fromCharCode(keyCode).match(/\d/) != null)) {
-                    this.inputService.addNumber(keyCode);
+                if (this.inputService.canInputMoreNumbers && (!isNaN(this.inputService.value) || String.fromCharCode(charCode).match(/\d/) != null)) {
+                    this.inputService.addNumber(charCode);
                 }
         }
 
