@@ -79,25 +79,13 @@ export class InputHandler {
     }
 
     handleKeypress(event: any): void {
-        let keyCode = event.which || event.keyCode;
+        let keyCode = event.which || event.charCode || event.keyCode;
 
-        switch (keyCode) {
-            case undefined:
-            case 9:
-            case 13:
-            case 35:
-            case 36:
-            case 37:
-            case 38:
-            case 39:
-            case 40:
-                return;
-            default:
+        if (keyCode == undefined || [9, 13].indexOf(keyCode) != -1 || this.isArrowEndHomeKeyInFirefox(event)) {
+            return;
         }
 
-        let charCode = keyCode || event.charCode;
-
-        switch (charCode) {
+        switch (keyCode) {
             case 43:
                 this.inputService.changeToPositive();
                 break;
@@ -105,8 +93,8 @@ export class InputHandler {
                 this.inputService.changeToNegative();
                 break;
             default:
-                if (this.inputService.canInputMoreNumbers && (!isNaN(this.inputService.value) || String.fromCharCode(charCode).match(/\d/) != null)) {
-                    this.inputService.addNumber(charCode);
+                if (this.inputService.canInputMoreNumbers && (!isNaN(this.inputService.value) || String.fromCharCode(keyCode).match(/\d/) != null)) {
+                    this.inputService.addNumber(keyCode);
                 }
         }
 
@@ -144,6 +132,14 @@ export class InputHandler {
 
     setValue(value: number): void {
         this.inputService.value = value;
+    }
+
+    private isArrowEndHomeKeyInFirefox(event: any) {
+        if ([35, 36, 37, 38, 39, 40].indexOf(event.keyCode) != -1 && (event.charCode == undefined || event.charCode == 0)) {
+            return true;
+        }
+
+        return false;
     }
 
     private setCursorPosition(event: any): void {
