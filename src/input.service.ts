@@ -10,8 +10,6 @@ export class InputService {
 
     focus(): void {
         if (this.options.removeMaskDuringEntry) {
-            const selectionStart = this.inputSelection.selectionStart;
-            const selectionEnd = this.inputSelection.selectionEnd;
             this.rawValue = this.value.toString();
         }
         if (this.options.selectOnFocus) {
