@@ -44,7 +44,7 @@ export class InputService {
         }
 
         let integerPart = rawValue
-            .split('.')[0].replace(/^0*/g, '')
+            .split(decimal)[0].replace(/^0*/g, '')
             .replace(/\B(?=(\d{3})+(?!\d))/g, thousands);
 
         if (integerPart === '') {
@@ -52,7 +52,7 @@ export class InputService {
         }
 
         let newRawValue = integerPart;
-        let decimalPart = rawValue.split('.')[1] || '0';
+        let decimalPart = rawValue.split(decimal)[1] || '0';
 
         if (precision > 0) {
             while (decimalPart.length < precision) {
