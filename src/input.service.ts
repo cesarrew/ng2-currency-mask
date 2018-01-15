@@ -96,6 +96,10 @@ export class InputService {
         this.inputManager.updateValueAndCursor(newRawValue, this.rawValue.length, selectionStart);
     }
 
+    isReadOnly() {
+        return this.inputManager.isReadOnly();
+    }
+
     updateOptions(options: any): void {
         let value: number = this.value;
         this.options = options;

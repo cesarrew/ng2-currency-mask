@@ -89,4 +89,8 @@ export class InputManager {
     get storedRawValue(): string {
         return this._storedRawValue;
     }
+
+    isReadOnly() {
+        return this.htmlInputElement.readOnly;
+    }
 }
