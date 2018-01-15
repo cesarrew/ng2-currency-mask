@@ -79,6 +79,10 @@ export class InputHandler {
     }
 
     handleKeypress(event: any): void {
+        if (this.inputService.isReadOnly()) {
+          return;
+        }
+        
         let keyCode = event.which || event.charCode || event.keyCode;
 
         if (keyCode == undefined || [9, 13].indexOf(keyCode) != -1 || this.isArrowEndHomeKeyInFirefox(event)) {
