@@ -85,7 +85,8 @@ export class InputService {
         }
 
         selectionEnd = keyCode == 46 || keyCode == 63272 ? selectionEnd + 1 : selectionEnd;
-        selectionStart = keyCode == 8 ? selectionStart - 1 : selectionStart;
+        let lengthOfZero = selectionEnd === selectionStart ? true : false;
+        selectionStart = keyCode === 8 && lengthOfZero ? selectionStart - 1 : selectionStart;
         this.rawValue = this.rawValue.substring(0, selectionStart) + this.rawValue.substring(selectionEnd, this.rawValue.length);
         this.updateFieldValue(selectionStart);
     }
