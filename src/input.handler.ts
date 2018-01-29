@@ -76,7 +76,10 @@ export class InputHandler {
                 this.onModelChange(this.inputService.value);
             }
 
-            if (keyCode == 8 && selectionRangeLength != 0 && !isNaN(this.inputService.value)) {
+            if (
+                (keyCode === 8 || keyCode === 46)
+                && selectionRangeLength != 0 && !isNaN(this.inputService.value)
+            ) {
                 this.inputService.removeNumber(keyCode);
                 this.onModelChange(this.inputService.value);
             }
