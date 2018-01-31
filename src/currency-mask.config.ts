@@ -6,6 +6,7 @@ export interface CurrencyMaskConfig {
     allowNegative: boolean;
     allowZero: boolean;
     decimal: string;
+    digitLimit: number;
     precision: number;
     prefix: string;
     suffix: string;

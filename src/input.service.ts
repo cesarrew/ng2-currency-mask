@@ -16,12 +16,19 @@ export class InputService {
         let keyChar = String.fromCharCode(keyCode);
         let selectionStart = this.inputSelection.selectionStart;
         let selectionEnd = this.inputSelection.selectionEnd;
-        this.rawValue = this.rawValue.substring(0, selectionStart) + keyChar + this.rawValue.substring(selectionEnd, this.rawValue.length);
-        this.updateFieldValue(selectionStart + 1);
+
+        if (this.value > 0) {
+            this.rawValue = this.rawValue.substring(0, selectionStart) + keyChar + this.rawValue.substring(selectionEnd, this.rawValue.length);
+            this.updateFieldValue(selectionStart + 1);
+        }
+        else {
+            this.rawValue = keyChar;
+            this.updateFieldValue(3);
+        }
     }
 
     applyMask(isNumber: boolean, rawValue: string): string {
-        let { allowNegative, decimal, precision, prefix, suffix, thousands } = this.options;
+        let { allowNegative, decimal, digitLimit, precision, prefix, suffix, thousands } = this.options;
         rawValue = isNumber ? new Number(rawValue).toFixed(precision) : rawValue;
         let onlyNumbers = rawValue.replace(/[^0-9]/g, "");
 
@@ -79,21 +86,52 @@ export class InputService {
         let selectionEnd = this.inputSelection.selectionEnd;
         let selectionStart = this.inputSelection.selectionStart;
 
+        if (selectionStart == selectionEnd && selectionStart < this.rawValue.search(/\d/)) {
+            selectionStart = selectionEnd = this.rawValue.search(/\d/);
+        }
+
         if (selectionStart > this.rawValue.length - this.options.suffix.length) {
             selectionEnd = this.rawValue.length - this.options.suffix.length;
             selectionStart = this.rawValue.length - this.options.suffix.length;
         }
 
-        selectionEnd = keyCode == 46 || keyCode == 63272 ? selectionEnd + 1 : selectionEnd;
-        selectionStart = keyCode == 8 ? selectionStart - 1 : selectionStart;
+        if (keyCode == 46 || keyCode == 63272) {
+            if (this.rawValue.charAt(selectionEnd).search(/\d/) < 0) {
+                selectionEnd = selectionEnd + 2;
+            }
+            else {
+                selectionEnd = selectionEnd + 1;
+            }
+        }
+
+        if (keyCode == 8) {
+            selectionStart = selectionStart - 1
+            if (this.rawValue.charAt(selectionStart).search(/\d/) < 0) {
+                selectionStart = selectionStart - 1;
+            }
+        }
+
         this.rawValue = this.rawValue.substring(0, selectionStart) + this.rawValue.substring(selectionEnd, this.rawValue.length);
-        this.updateFieldValue(selectionStart);
+        this.updateFieldValue(selectionStart, keyCode);
     }
 
-    updateFieldValue(selectionStart?: number): void {
+    removeNumbers(): void {
+        let selectionEnd = this.inputSelection.selectionEnd;
+        let selectionStart = this.inputSelection.selectionStart;
+
+        if (selectionStart > this.rawValue.length - this.options.suffix.length) {
+            selectionEnd = this.rawValue.length - this.options.suffix.length;
+            selectionStart = this.rawValue.length - this.options.suffix.length;
+        }
+
+        this.rawValue = this.rawValue.substring(0, selectionStart) + this.rawValue.substring(selectionEnd, this.rawValue.length);
+        this.updateFieldValue(selectionStart, 46);
+    }
+
+    updateFieldValue(selectionStart?: number, keyCode?: number): void {
         let newRawValue = this.applyMask(false, this.rawValue || "");
         selectionStart = selectionStart == undefined ? this.rawValue.length : selectionStart;
-        this.inputManager.updateValueAndCursor(newRawValue, this.rawValue.length, selectionStart);
+        this.inputManager.updateValueAndCursor(newRawValue, this.rawValue.length, selectionStart, keyCode);
     }
 
     updateOptions(options: any): void {
@@ -103,7 +141,7 @@ export class InputService {
     }
 
     get canInputMoreNumbers(): boolean {
-        return this.inputManager.canInputMoreNumbers;
+        return this.rawValue.replace(/\D/g, '').length < this.options.digitLimit && this.inputManager.canInputMoreNumbers;
     }
 
     get inputSelection(): any {

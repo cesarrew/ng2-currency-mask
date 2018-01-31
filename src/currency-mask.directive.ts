@@ -26,6 +26,7 @@ export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccesso
         allowNegative: true,
         allowZero: true,
         decimal: ".",
+        digitLimit: 9,
         precision: 2,
         prefix: "$ ",
         suffix: "",
