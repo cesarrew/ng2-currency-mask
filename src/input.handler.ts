@@ -5,9 +5,11 @@ export class InputHandler {
     private inputService: InputService;
     private onModelChange: Function;
     private onModelTouched: Function;
+    private htmlInputElement:HTMLInputElement;
 
     constructor(htmlInputElement: HTMLInputElement, options: any) {
         this.inputService = new InputService(htmlInputElement, options);
+        this.htmlInputElement = htmlInputElement;
     }
 
     handleCut(event: any): void {
