@@ -48,7 +48,7 @@ export class InputService {
     }
 
     clearMask(rawValue: string): number {
-        if (rawValue == null) {
+        if (rawValue === null || rawValue === '') {
             return null;
         }
 
