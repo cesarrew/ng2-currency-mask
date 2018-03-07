@@ -5,12 +5,19 @@ export class InputHandler {
     private inputService: InputService;
     private onModelChange: Function;
     private onModelTouched: Function;
+    private htmlInputElement:HTMLInputElement;
 
     constructor(htmlInputElement: HTMLInputElement, options: any) {
         this.inputService = new InputService(htmlInputElement, options);
+        this.htmlInputElement = htmlInputElement;
     }
 
     handleCut(event: any): void {
+        
+        if (this.htmlInputElement && this.htmlInputElement.readOnly) {
+            return;
+        }
+        
         setTimeout(() => {
             this.inputService.updateFieldValue();
             this.setValue(this.inputService.value);
@@ -19,6 +26,10 @@ export class InputHandler {
     }
 
     handleInput(event: any): void {
+        if (this.htmlInputElement && this.htmlInputElement.readOnly) {
+            return;
+        }
+        
         let keyCode = this.inputService.rawValue.charCodeAt(this.inputService.rawValue.length - 1);
         let rawValueLength = this.inputService.rawValue.length;
         let rawValueSelectionEnd = this.inputService.inputSelection.selectionEnd;
@@ -60,6 +71,10 @@ export class InputHandler {
     }
 
     handleKeydown(event: any): void {
+        if (this.htmlInputElement && this.htmlInputElement.readOnly) {
+            return;
+        }
+        
         let keyCode = event.which || event.charCode || event.keyCode;
 
         if (keyCode == 8 || keyCode == 46 || keyCode == 63272) {
@@ -79,6 +94,10 @@ export class InputHandler {
     }
 
     handleKeypress(event: any): void {
+        if (this.htmlInputElement && this.htmlInputElement.readOnly) {
+            return;
+        }
+        
         let keyCode = event.which || event.charCode || event.keyCode;
 
         if (keyCode == undefined || [9, 13].indexOf(keyCode) != -1 || this.isArrowEndHomeKeyInFirefox(event)) {
@@ -103,6 +122,10 @@ export class InputHandler {
     }
 
     handlePaste(event: any): void {
+        if (this.htmlInputElement && this.htmlInputElement.readOnly) {
+            return;
+        }
+        
         setTimeout(() => {
             this.inputService.updateFieldValue();
             this.setValue(this.inputService.value);
