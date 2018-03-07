@@ -42,13 +42,12 @@ export class InputManager {
             selectionStart = this.htmlInputElement.selectionStart;
             selectionEnd = this.htmlInputElement.selectionEnd;
         } else {
-            let range = (<any>document).selection.createRange();
+            let range = document.getSelection().baseNode;
 
-            if (range && range.parentElement() == this.htmlInputElement) {
+            if (range && range.firstChild == this.htmlInputElement) {
                 let lenght = this.htmlInputElement.value.length;
                 let normalizedValue = this.htmlInputElement.value.replace(/\r\n/g, "\n");
                 let startRange = this.htmlInputElement.createTextRange();
-                startRange.moveToBookmark(range.getBookmark());
                 let endRange = this.htmlInputElement.createTextRange();
                 endRange.collapse(false);
 

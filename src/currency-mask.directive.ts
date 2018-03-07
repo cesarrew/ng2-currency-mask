@@ -37,7 +37,7 @@ export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccesso
             this.optionsTemplate = currencyMaskConfig;
         }
 
-        this.keyValueDiffer = keyValueDiffers.find({}).create(null);
+        this.keyValueDiffer = keyValueDiffers.find({}).create();
     }
 
     ngAfterViewInit() {
