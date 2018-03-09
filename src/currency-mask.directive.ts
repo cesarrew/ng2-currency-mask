@@ -24,6 +24,7 @@ export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccesso
     optionsTemplate = {
         align: "right",
         allowNegative: true,
+        allowNegativeZero: false,
         allowZero: true,
         decimal: ".",
         precision: 2,

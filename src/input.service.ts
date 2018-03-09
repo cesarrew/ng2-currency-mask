@@ -21,7 +21,7 @@ export class InputService {
     }
 
     applyMask(isNumber: boolean, rawValue: string): string {
-        let { allowNegative, decimal, precision, prefix, suffix, thousands } = this.options;
+        let { allowNegative, allowNegativeZero, decimal, precision, prefix, suffix, thousands } = this.options;
         rawValue = isNumber ? new Number(rawValue).toFixed(precision) : rawValue;
         let onlyNumbers = rawValue.replace(/[^0-9]/g, "");
 
@@ -44,7 +44,7 @@ export class InputService {
         }
 
         let isZero = parseInt(integerPart) == 0 && (parseInt(decimalPart) == 0 || decimalPart == "");
-        let operator = (rawValue.indexOf("-") > -1 && allowNegative && !isZero) ? "-" : "";
+        let operator = (rawValue.indexOf("-") > -1 && allowNegative && (!isZero || allowNegativeZero)) ? "-" : "";
         return operator + prefix + newRawValue + suffix;
     }
 
@@ -69,6 +69,8 @@ export class InputService {
     changeToNegative(): void {
         if (this.options.allowNegative && this.rawValue != "" && this.rawValue.charAt(0) != "-" && this.value != 0) {
             this.rawValue = "-" + this.rawValue;
+        } else if(this.options.allowNegativeZero && (this.rawValue == "" || this.value == 0)) {
+            this.rawValue = this.applyMask(false, "-0");
         }
     }
 

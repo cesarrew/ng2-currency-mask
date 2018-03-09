@@ -51,6 +51,7 @@ Available options:
 
  * `align` - Text alignment in input. (default: `right`)
  * `allowNegative` - If `true` can input negative values.  (default: `true`)
+ * `allowNegativeZero` - If `true` can input a negative sign before numbers are entered.  (default: `false`)
  * `decimal` -  Separator of decimals (default: `'.'`)
  * `precision` - Number of decimal places (default: `2`)
  * `prefix` - Money prefix (default: `'$ '`)
