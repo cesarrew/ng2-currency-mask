@@ -77,6 +77,7 @@ export class InputService {
     }
 
     removeNumber(keyCode: number): void {
+        let { decimal, thousands } = this.options;
         let selectionEnd = this.inputSelection.selectionEnd;
         let selectionStart = this.inputSelection.selectionStart;
 
@@ -85,8 +86,31 @@ export class InputService {
             selectionStart = this.rawValue.length - this.options.suffix.length;
         }
 
-        selectionEnd = keyCode == 46 || keyCode == 63272 ? selectionEnd + 1 : selectionEnd;
-        selectionStart = keyCode == 8 && (selectionEnd == selectionStart) ? selectionStart - 1 : selectionStart;
+        //there is no selection
+        if (selectionEnd == selectionStart) {
+            //delete key and the target digit is a number
+            if ((keyCode == 46 || keyCode == 63272) && /^\d+$/.test(this.rawValue.substring(selectionStart, selectionEnd + 1))) {
+                selectionEnd = selectionEnd + 1;
+            }
+
+            //delete key and the target digit is the decimal or thousands divider
+            if ((keyCode == 46 || keyCode == 63272) && (this.rawValue.substring(selectionStart, selectionEnd + 1) == decimal || this.rawValue.substring(selectionStart, selectionEnd + 1) == thousands)) {
+                selectionEnd = selectionEnd + 2;
+                selectionStart = selectionStart + 1;
+            }
+
+            //backspace key and the target digit is a number
+            if (keyCode == 8 && /^\d+$/.test(this.rawValue.substring(selectionStart - 1, selectionEnd))) {
+                selectionStart = selectionStart - 1;
+            }
+
+            //backspace key and the target digit is the decimal or thousands divider
+            if (keyCode == 8 && (this.rawValue.substring(selectionStart - 1, selectionEnd) == decimal || this.rawValue.substring(selectionStart - 1, selectionEnd) == thousands)) {
+                selectionStart = selectionStart - 2;
+                selectionEnd = selectionEnd - 1;
+            }
+        }
+
         this.rawValue = this.rawValue.substring(0, selectionStart) + this.rawValue.substring(selectionEnd, this.rawValue.length);
         this.updateFieldValue(selectionStart);
     }
