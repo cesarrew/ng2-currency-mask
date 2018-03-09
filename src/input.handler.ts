@@ -1,4 +1,4 @@
-import { InputService } from './input.service';
+import { InputService } from "./input.service";
 
 export class InputHandler {
 
@@ -10,14 +10,6 @@ export class InputHandler {
     constructor(htmlInputElement: HTMLInputElement, options: any) {
         this.inputService = new InputService(htmlInputElement, options);
         this.htmlInputElement = htmlInputElement;
-    }
-
-    handleFocus(event: any): void {
-        this.inputService.focus();
-    }
-
-    handleBlur(event: any): void {
-        this.inputService.blur();
     }
 
     handleCut(event: any): void {
@@ -37,19 +29,19 @@ export class InputHandler {
             return;
         }
 
-        const keyCode = this.inputService.rawValue.charCodeAt(this.inputService.rawValue.length - 1);
-        const rawValueLength = this.inputService.rawValue.length;
-        const rawValueSelectionEnd = this.inputService.inputSelection.selectionEnd;
-        const storedRawValueLength = this.inputService.storedRawValue.length;
+        let keyCode = this.inputService.rawValue.charCodeAt(this.inputService.rawValue.length - 1);
+        let rawValueLength = this.inputService.rawValue.length;
+        let rawValueSelectionEnd = this.inputService.inputSelection.selectionEnd;
+        let storedRawValueLength = this.inputService.storedRawValue.length;
         this.inputService.rawValue = this.inputService.storedRawValue;
 
-        if (rawValueLength !== rawValueSelectionEnd || Math.abs(rawValueLength - storedRawValueLength) !== 1) {
+        if (rawValueLength != rawValueSelectionEnd || Math.abs(rawValueLength - storedRawValueLength) != 1) {
             this.setCursorPosition(event);
             return;
         }
 
         if (rawValueLength < storedRawValueLength) {
-            if (this.inputService.value !== 0) {
+            if (this.inputService.value != 0) {
                 this.inputService.removeNumber(8);
             } else {
                 this.setValue(null);
@@ -65,8 +57,7 @@ export class InputHandler {
                     this.inputService.changeToNegative();
                     break;
                 default:
-                    if (!this.inputService.canInputMoreNumbers || (isNaN(this.inputService.value) &&
-                        String.fromCharCode(keyCode).match(/\d/) == null)) {
+                    if (!this.inputService.canInputMoreNumbers || (isNaN(this.inputService.value) && String.fromCharCode(keyCode).match(/\d/) == null)) {
                         return;
                     }
 
@@ -83,19 +74,18 @@ export class InputHandler {
             return;
         }
 
-        const keyCode = event.which || event.charCode || event.keyCode;
+        let keyCode = event.which || event.charCode || event.keyCode;
 
-        if (keyCode === 8 || keyCode === 46 || keyCode === 63272) {
+        if (keyCode == 8 || keyCode == 46 || keyCode == 63272) {
             event.preventDefault();
-            const selectionRangeLength = Math.abs(this.inputService.inputSelection.selectionEnd -
-                this.inputService.inputSelection.selectionStart);
+            let selectionRangeLength = Math.abs(this.inputService.inputSelection.selectionEnd - this.inputService.inputSelection.selectionStart);
 
-            if (selectionRangeLength === this.inputService.rawValue.length || this.inputService.value === 0) {
+            if (selectionRangeLength == this.inputService.rawValue.length || this.inputService.value == 0) {
                 this.setValue(null);
                 this.onModelChange(this.inputService.value);
             }
 
-            if (selectionRangeLength === 0 && !isNaN(this.inputService.value)) {
+            if (selectionRangeLength == 0 && !isNaN(this.inputService.value)) {
                 this.inputService.removeNumber(keyCode);
                 this.onModelChange(this.inputService.value);
             }
@@ -107,9 +97,9 @@ export class InputHandler {
             return;
         }
 
-        const keyCode = event.which || event.charCode || event.keyCode;
+        let keyCode = event.which || event.charCode || event.keyCode;
 
-        if (keyCode === undefined || [9, 13].indexOf(keyCode) !== -1 || this.isArrowEndHomeKeyInFirefox(event)) {
+        if (keyCode == undefined || [9, 13].indexOf(keyCode) != -1 || this.isArrowEndHomeKeyInFirefox(event)) {
             return;
         }
 
@@ -121,8 +111,7 @@ export class InputHandler {
                 this.inputService.changeToNegative();
                 break;
             default:
-                if (this.inputService.canInputMoreNumbers && (!isNaN(this.inputService.value) ||
-                    String.fromCharCode(keyCode).match(/\d/) != null)) {
+                if (this.inputService.canInputMoreNumbers && (!isNaN(this.inputService.value) || String.fromCharCode(keyCode).match(/\d/) != null)) {
                     this.inputService.addNumber(keyCode);
                 }
         }
@@ -168,7 +157,7 @@ export class InputHandler {
     }
 
     private isArrowEndHomeKeyInFirefox(event: any) {
-        if ([35, 36, 37, 38, 39, 40].indexOf(event.keyCode) !== -1 && (event.charCode === undefined || event.charCode === 0)) {
+        if ([35, 36, 37, 38, 39, 40].indexOf(event.keyCode) != -1 && (event.charCode == undefined || event.charCode == 0)) {
             return true;
         }
 
