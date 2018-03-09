@@ -18,10 +18,20 @@ export class InputManager {
         }
     }
 
-    updateValueAndCursor(newRawValue: string, oldLength: number, selectionStart: number): void {
+    updateValueAndCursor(newRawValue: string, oldLength: number, selectionStart: number, keyCode?: number): void {
         this.rawValue = newRawValue;
         let newLength = newRawValue.length;
-        selectionStart = selectionStart - (oldLength - newLength);
+
+        if (keyCode && (keyCode == 8 || keyCode == 46 || keyCode == 63272) && selectionStart <= newRawValue.search(/\d/)) {
+            selectionStart = newRawValue.search(/\d/);
+        }
+        else if (selectionStart <= newRawValue.search(/\d/)) {
+            selectionStart = newRawValue.search(/\d/) + 1;
+        }
+        else {
+            selectionStart = selectionStart - (oldLength - newLength);
+        }
+
         this.setCursorAt(selectionStart);
     }
 

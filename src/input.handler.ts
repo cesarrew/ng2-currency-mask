@@ -84,6 +84,10 @@ export class InputHandler {
                 this.setValue(null);
                 this.onModelChange(this.inputService.value);
             }
+            else if (selectionRangeLength > 0) {
+                this.inputService.removeNumbers();
+                this.onModelChange(this.inputService.value);
+            }
 
             if (selectionRangeLength == 0 && !isNaN(this.inputService.value)) {
                 this.inputService.removeNumber(keyCode);
