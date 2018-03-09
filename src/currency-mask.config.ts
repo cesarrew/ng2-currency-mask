@@ -1,4 +1,4 @@
-import { InjectionToken } from '@angular/core';
+import { InjectionToken } from "@angular/core";
 
 export interface CurrencyMaskConfig {
 
@@ -10,8 +10,6 @@ export interface CurrencyMaskConfig {
     prefix: string;
     suffix: string;
     thousands: string;
-    selectOnFocus: boolean;
-    removeMaskDuringEntry: boolean;
 }
 
-export let CURRENCY_MASK_CONFIG = new InjectionToken<CurrencyMaskConfig>('currency.mask.config');
+export let CURRENCY_MASK_CONFIG = new InjectionToken<CurrencyMaskConfig>("currency.mask.config");

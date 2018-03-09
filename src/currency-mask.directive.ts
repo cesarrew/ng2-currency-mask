@@ -1,11 +1,8 @@
-import {
-    AfterViewInit, Directive, DoCheck, ElementRef, forwardRef, HostListener, Inject, KeyValueDiffer,
-    KeyValueDiffers, Input, OnInit, Optional
-} from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { AfterViewInit, Directive, DoCheck, ElementRef, forwardRef, HostListener, Inject, KeyValueDiffer, KeyValueDiffers, Input, OnInit, Optional } from "@angular/core";
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 
-import { CurrencyMaskConfig, CURRENCY_MASK_CONFIG } from './currency-mask.config';
-import { InputHandler } from './input.handler';
+import { CurrencyMaskConfig, CURRENCY_MASK_CONFIG } from "./currency-mask.config";
+import { InputHandler } from "./input.handler";
 
 export const CURRENCYMASKDIRECTIVE_VALUE_ACCESSOR: any = {
     provide: NG_VALUE_ACCESSOR,
@@ -14,8 +11,7 @@ export const CURRENCYMASKDIRECTIVE_VALUE_ACCESSOR: any = {
 };
 
 @Directive({
-    // tslint:disable-next-line:directive-selector
-    selector: '[currencyMask]',
+    selector: "[currencyMask]",
     providers: [CURRENCYMASKDIRECTIVE_VALUE_ACCESSOR]
 })
 export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccessor, DoCheck, OnInit {
@@ -26,20 +22,17 @@ export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccesso
     keyValueDiffer: KeyValueDiffer<any, any>;
 
     optionsTemplate = {
-        align: 'right',
+        align: "right",
         allowNegative: true,
         allowZero: true,
-        decimal: '.',
+        decimal: ".",
         precision: 2,
-        prefix: '$ ',
-        suffix: '',
-        thousands: ',',
-        selectOnFocus: false,
-        removeMaskDuringEntry: false
+        prefix: "$ ",
+        suffix: "",
+        thousands: ","
     };
 
-    constructor( @Optional() @Inject(CURRENCY_MASK_CONFIG) private currencyMaskConfig: CurrencyMaskConfig,
-        private elementRef: ElementRef, private keyValueDiffers: KeyValueDiffers) {
+    constructor( @Optional() @Inject(CURRENCY_MASK_CONFIG) private currencyMaskConfig: CurrencyMaskConfig, private elementRef: ElementRef, private keyValueDiffers: KeyValueDiffers) {
         if (currencyMaskConfig) {
             this.optionsTemplate = currencyMaskConfig;
         }
@@ -62,47 +55,41 @@ export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccesso
         this.inputHandler = new InputHandler(this.elementRef.nativeElement, (<any>Object).assign({}, this.optionsTemplate, this.options));
     }
 
-    @HostListener('focus', ['$event'])
-    onFocus(event: any) {
-        this.inputHandler.handleFocus(event);
-    }
-
-    @HostListener('blur', ['$event'])
-    onBlur(event: any) {
-        this.inputHandler.handleBlur(event);
+    @HostListener("blur", ["$event"])
+    handleBlur(event: any) {
         this.inputHandler.getOnModelTouched().apply(event);
     }
 
-    @HostListener('cut', ['$event'])
-    onCut(event: any) {
+    @HostListener("cut", ["$event"])
+    handleCut(event: any) {
         if (!this.isChromeAndroid()) {
             this.inputHandler.handleCut(event);
         }
     }
 
-    @HostListener('input', ['$event'])
-    onInput(event: any) {
+    @HostListener("input", ["$event"])
+    handleInput(event: any) {
         if (this.isChromeAndroid()) {
             this.inputHandler.handleInput(event);
         }
     }
 
-    @HostListener('keydown', ['$event'])
-    onKeydown(event: any) {
+    @HostListener("keydown", ["$event"])
+    handleKeydown(event: any) {
         if (!this.isChromeAndroid()) {
             this.inputHandler.handleKeydown(event);
         }
     }
 
-    @HostListener('keypress', ['$event'])
-    onKeypress(event: any) {
+    @HostListener("keypress", ["$event"])
+    handleKeypress(event: any) {
         if (!this.isChromeAndroid()) {
             this.inputHandler.handleKeypress(event);
         }
     }
 
-    @HostListener('paste', ['$event'])
-    onPaste(event: any) {
+    @HostListener("paste", ["$event"])
+    handlePaste(event: any) {
         if (!this.isChromeAndroid()) {
             this.inputHandler.handlePaste(event);
         }
