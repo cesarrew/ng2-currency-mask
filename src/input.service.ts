@@ -39,6 +39,7 @@ export class InputService {
         let decimalPart = onlyNumbers.slice(onlyNumbers.length - precision);
 
         if (precision > 0) {
+            decimalPart = "0".repeat(precision - decimalPart.length) + decimalPart;
             newRawValue += decimal + decimalPart;
         }
 
