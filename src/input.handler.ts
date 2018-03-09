@@ -5,9 +5,11 @@ export class InputHandler {
     private inputService: InputService;
     private onModelChange: Function;
     private onModelTouched: Function;
+    private htmlInputElement: HTMLInputElement;
 
     constructor(htmlInputElement: HTMLInputElement, options: any) {
         this.inputService = new InputService(htmlInputElement, options);
+        this.htmlInputElement = htmlInputElement;
     }
 
     handleFocus(event: any): void {
@@ -19,6 +21,10 @@ export class InputHandler {
     }
 
     handleCut(event: any): void {
+        if (this.isReadOnly()) {
+            return;
+        }
+
         setTimeout(() => {
             this.inputService.updateFieldValue();
             this.setValue(this.inputService.value);
@@ -27,6 +33,10 @@ export class InputHandler {
     }
 
     handleInput(event: any): void {
+        if (this.isReadOnly()) {
+            return;
+        }
+
         const keyCode = this.inputService.rawValue.charCodeAt(this.inputService.rawValue.length - 1);
         const rawValueLength = this.inputService.rawValue.length;
         const rawValueSelectionEnd = this.inputService.inputSelection.selectionEnd;
@@ -69,6 +79,10 @@ export class InputHandler {
     }
 
     handleKeydown(event: any): void {
+        if (this.isReadOnly()) {
+            return;
+        }
+
         const keyCode = event.which || event.charCode || event.keyCode;
 
         if (keyCode === 8 || keyCode === 46 || keyCode === 63272) {
@@ -89,6 +103,10 @@ export class InputHandler {
     }
 
     handleKeypress(event: any): void {
+        if (this.isReadOnly()) {
+            return;
+        }
+
         const keyCode = event.which || event.charCode || event.keyCode;
 
         if (keyCode === undefined || [9, 13].indexOf(keyCode) !== -1 || this.isArrowEndHomeKeyInFirefox(event)) {
@@ -114,6 +132,10 @@ export class InputHandler {
     }
 
     handlePaste(event: any): void {
+        if (this.isReadOnly()) {
+            return;
+        }
+
         setTimeout(() => {
             this.inputService.updateFieldValue();
             this.setValue(this.inputService.value);
@@ -151,6 +173,10 @@ export class InputHandler {
         }
 
         return false;
+    }
+
+    private isReadOnly() {
+        return this.htmlInputElement && this.htmlInputElement.readOnly;
     }
 
     private setCursorPosition(event: any): void {

@@ -46,13 +46,12 @@ export class InputManager {
             selectionStart = this.htmlInputElement.selectionStart;
             selectionEnd = this.htmlInputElement.selectionEnd;
         } else {
-            const range = (<any>document).selection.createRange();
+            const range = document.getSelection().baseNode;
 
-            if (range && range.parentElement() === this.htmlInputElement) {
+            if (range && range.firstChild == this.htmlInputElement) {
                 const length = this.htmlInputElement.value.length;
                 const normalizedValue = this.htmlInputElement.value.replace(/\r\n/g, '\n');
                 const startRange = this.htmlInputElement.createTextRange();
-                startRange.moveToBookmark(range.getBookmark());
                 const endRange = this.htmlInputElement.createTextRange();
                 endRange.collapse(false);
 

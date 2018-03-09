@@ -58,6 +58,7 @@ export class InputService {
             while (decimalPart.length < precision) {
                 decimalPart = decimalPart + '0';
             }
+
             newRawValue += decimal + decimalPart;
         }
 
@@ -67,7 +68,7 @@ export class InputService {
     }
 
     clearMask(rawValue: string): number {
-        if (rawValue == null) {
+        if (rawValue == null || rawValue == "") {
             return null;
         }
 

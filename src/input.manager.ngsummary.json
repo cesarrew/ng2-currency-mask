@@ -1,0 +1,1 @@
+{"moduleName":null,"summaries":[{"symbol":{"__symbol":0,"members":[]},"metadata":{"__symbolic":"class","members":{"__ctor__":[{"__symbolic":"constructor","parameters":[null]}],"setCursorAt":[{"__symbolic":"method"}],"updateValueAndCursor":[{"__symbolic":"method"}]}}}],"symbols":[{"__symbol":0,"name":"InputManager","filePath":"./input.manager"}]}
