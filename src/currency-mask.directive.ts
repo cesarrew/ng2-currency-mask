@@ -32,7 +32,7 @@ export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccesso
         thousands: ","
     };
 
-    constructor( @Optional() @Inject(CURRENCY_MASK_CONFIG) private currencyMaskConfig: CurrencyMaskConfig, private elementRef: ElementRef, private keyValueDiffers: KeyValueDiffers) {
+    constructor(@Optional() @Inject(CURRENCY_MASK_CONFIG) private currencyMaskConfig: CurrencyMaskConfig, private elementRef: ElementRef, private keyValueDiffers: KeyValueDiffers) {
         if (currencyMaskConfig) {
             this.optionsTemplate = currencyMaskConfig;
         }
@@ -60,6 +60,14 @@ export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccesso
         this.inputHandler.getOnModelTouched().apply(event);
     }
 
+    //TODO: Add the click behavior to mobile as well.
+    @HostListener("click", ["$event"])
+    handleClick(event: any) {
+        if (!this.isChromeAndroid()) {
+            this.inputHandler.handleClick(event);
+        }
+    }
+
     @HostListener("cut", ["$event"])
     handleCut(event: any) {
         if (!this.isChromeAndroid()) {
@@ -85,6 +93,13 @@ export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccesso
     handleKeypress(event: any) {
         if (!this.isChromeAndroid()) {
             this.inputHandler.handleKeypress(event);
+        }
+    }
+
+    @HostListener("keyup", ["$event"])
+    handleKeyup(event: any) {
+        if (!this.isChromeAndroid()) {
+            this.inputHandler.handleKeyup(event);
         }
     }
 

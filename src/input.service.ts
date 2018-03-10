@@ -68,12 +68,33 @@ export class InputService {
 
     changeToNegative(): void {
         if (this.options.allowNegative && this.rawValue != "" && this.rawValue.charAt(0) != "-" && this.value != 0) {
+            let selectionStart = this.inputSelection.selectionStart;
             this.rawValue = "-" + this.rawValue;
+            this.updateFieldValue(selectionStart + 1);
         }
     }
 
     changeToPositive(): void {
+        let selectionStart = this.inputSelection.selectionStart;
         this.rawValue = this.rawValue.replace("-", "");
+        this.updateFieldValue(selectionStart - 1);
+    }
+
+    fixCursorPosition(): void {
+        let { prefix, suffix } = this.options;
+        let currentCursorPosition = this.inputSelection.selectionStart;
+        let rawValueWithoutPrefixSuffixEndPosition = this.rawValue.length - suffix.length;
+        let rawValueWithoutPrefixSuffixStartPosition = this.value != null && this.value < 0 ? prefix.length + 1 : prefix.length;
+
+        //if the current cursor position is before the number start position, it is moved to the start of the number, ignoring the prefix or suffix
+        if (currentCursorPosition < rawValueWithoutPrefixSuffixStartPosition) {
+            this.inputManager.setCursorAt(rawValueWithoutPrefixSuffixStartPosition);
+        }
+
+        //if the current cursor position is after the number end position, it is moved to the end of the number, ignoring the prefix or suffix
+        if (currentCursorPosition > rawValueWithoutPrefixSuffixEndPosition) {
+            this.inputManager.setCursorAt(rawValueWithoutPrefixSuffixEndPosition);
+        }
     }
 
     removeNumber(keyCode: number): void {

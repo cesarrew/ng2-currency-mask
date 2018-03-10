@@ -12,6 +12,14 @@ export class InputHandler {
         this.htmlInputElement = htmlInputElement;
     }
 
+    handleClick(event: any): void {
+        let selectionRangeLength = Math.abs(this.inputService.inputSelection.selectionEnd - this.inputService.inputSelection.selectionStart);
+
+        if (selectionRangeLength == 0 && !isNaN(this.inputService.value)) {
+            this.inputService.fixCursorPosition();
+        }
+    }
+
     handleCut(event: any): void {
         if (this.isReadOnly()) {
             return;
@@ -24,6 +32,7 @@ export class InputHandler {
         }, 0);
     }
 
+    //TODO: Fix to work with fixCursorPosition() method.
     handleInput(event: any): void {
         if (this.isReadOnly()) {
             return;
@@ -123,6 +132,10 @@ export class InputHandler {
 
         event.preventDefault();
         this.onModelChange(this.inputService.value);
+    }
+
+    handleKeyup(event: any): void {
+        this.inputService.fixCursorPosition();
     }
 
     handlePaste(event: any): void {
