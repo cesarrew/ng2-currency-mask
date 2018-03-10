@@ -24,7 +24,6 @@ export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccesso
     optionsTemplate = {
         align: "right",
         allowNegative: true,
-        allowZero: true,
         decimal: ".",
         precision: 2,
         prefix: "$ ",
@@ -60,12 +59,9 @@ export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccesso
         this.inputHandler.getOnModelTouched().apply(event);
     }
 
-    //TODO: Add the click behavior to mobile as well.
     @HostListener("click", ["$event"])
     handleClick(event: any) {
-        if (!this.isChromeAndroid()) {
-            this.inputHandler.handleClick(event);
-        }
+        this.inputHandler.handleClick(event, this.isChromeAndroid());
     }
 
     @HostListener("cut", ["$event"])

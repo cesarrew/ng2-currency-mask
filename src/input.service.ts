@@ -80,21 +80,24 @@ export class InputService {
         this.updateFieldValue(selectionStart - 1);
     }
 
-    fixCursorPosition(): void {
-        let { prefix, suffix } = this.options;
+    fixCursorPosition(forceToEndPosition?: boolean): void {
         let currentCursorPosition = this.inputSelection.selectionStart;
-        let rawValueWithoutPrefixSuffixEndPosition = this.rawValue.length - suffix.length;
-        let rawValueWithoutPrefixSuffixStartPosition = this.value != null && this.value < 0 ? prefix.length + 1 : prefix.length;
 
-        //if the current cursor position is before the number start position, it is moved to the start of the number, ignoring the prefix or suffix
-        if (currentCursorPosition < rawValueWithoutPrefixSuffixStartPosition) {
-            this.inputManager.setCursorAt(rawValueWithoutPrefixSuffixStartPosition);
+        //if the current cursor position is after the number end position, it is moved to the end of the number, ignoring the prefix or suffix. this behavior can be forced with forceToEndPosition flag
+        if (currentCursorPosition > this.getRawValueWithoutSuffixEndPosition() || forceToEndPosition) {
+            this.inputManager.setCursorAt(this.getRawValueWithoutSuffixEndPosition());
+            //if the current cursor position is before the number start position, it is moved to the start of the number, ignoring the prefix or suffix
+        } else if (currentCursorPosition < this.getRawValueWithoutPrefixStartPosition()) {
+            this.inputManager.setCursorAt(this.getRawValueWithoutPrefixStartPosition());
         }
+    }
 
-        //if the current cursor position is after the number end position, it is moved to the end of the number, ignoring the prefix or suffix
-        if (currentCursorPosition > rawValueWithoutPrefixSuffixEndPosition) {
-            this.inputManager.setCursorAt(rawValueWithoutPrefixSuffixEndPosition);
-        }
+    getRawValueWithoutSuffixEndPosition(): number {
+        return this.rawValue.length - this.options.suffix.length;
+    }
+
+    getRawValueWithoutPrefixStartPosition(): number {
+        return this.value != null && this.value < 0 ? this.options.prefix.length + 1 : this.options.prefix.length;
     }
 
     removeNumber(keyCode: number): void {

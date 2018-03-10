@@ -12,11 +12,12 @@ export class InputHandler {
         this.htmlInputElement = htmlInputElement;
     }
 
-    handleClick(event: any): void {
+    handleClick(event: any, chromeAndroid: boolean): void {
         let selectionRangeLength = Math.abs(this.inputService.inputSelection.selectionEnd - this.inputService.inputSelection.selectionStart);
 
+        //if there is no selection and the value is not null, the cursor position will be fixed. if the browser is chrome on android, the cursor will go to the end of the number.
         if (selectionRangeLength == 0 && !isNaN(this.inputService.value)) {
-            this.inputService.fixCursorPosition();
+            this.inputService.fixCursorPosition(chromeAndroid);
         }
     }
 
@@ -32,19 +33,19 @@ export class InputHandler {
         }, 0);
     }
 
-    //TODO: Fix to work with fixCursorPosition() method.
     handleInput(event: any): void {
         if (this.isReadOnly()) {
             return;
         }
 
-        let keyCode = this.inputService.rawValue.charCodeAt(this.inputService.rawValue.length - 1);
+        let keyCode = this.getNewKeyCode(this.inputService.storedRawValue, this.inputService.rawValue);
         let rawValueLength = this.inputService.rawValue.length;
         let rawValueSelectionEnd = this.inputService.inputSelection.selectionEnd;
+        let rawValueWithoutSuffixEndPosition = this.inputService.getRawValueWithoutSuffixEndPosition();
         let storedRawValueLength = this.inputService.storedRawValue.length;
         this.inputService.rawValue = this.inputService.storedRawValue;
 
-        if (rawValueLength != rawValueSelectionEnd || Math.abs(rawValueLength - storedRawValueLength) != 1) {
+        if ((rawValueSelectionEnd != rawValueWithoutSuffixEndPosition || Math.abs(rawValueLength - storedRawValueLength) != 1) && storedRawValueLength != 0) {
             this.setCursorPosition(event);
             return;
         }
@@ -174,6 +175,18 @@ export class InputHandler {
         this.inputService.value = value;
     }
 
+    private getNewKeyCode(oldString: string, newString: string): number {
+        if (oldString.length > newString.length) {
+            return null;
+        }
+
+        for (let x = 0; x < newString.length; x++) {
+            if (oldString.length == x || oldString[x] != newString[x]) {
+                return newString.charCodeAt(x);
+            }
+        }
+    }
+
     private isArrowEndHomeKeyInFirefox(event: any) {
         if ([35, 36, 37, 38, 39, 40].indexOf(event.keyCode) != -1 && (event.charCode == undefined || event.charCode == 0)) {
             return true;
@@ -187,8 +200,10 @@ export class InputHandler {
     }
 
     private setCursorPosition(event: any): void {
+        let rawValueWithoutSuffixEndPosition = this.inputService.getRawValueWithoutSuffixEndPosition();
+
         setTimeout(function () {
-            event.target.setSelectionRange(event.target.value.length, event.target.value.length);
+            event.target.setSelectionRange(rawValueWithoutSuffixEndPosition, rawValueWithoutSuffixEndPosition);
         }, 0);
     }
 }
