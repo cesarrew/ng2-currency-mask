@@ -89,7 +89,7 @@ export class AppModule {}
 
 ### Validation
 
-This directive also provides built-in validation for min and max accepted values. If the attributes 'min' and / or 'max' are setted, the Angular CSS class 'ng-invalid' will be added to the input to indicate an invalid value.
+This directive also provides built-in validation for minimum and maximum values. If the attributes 'min' and / or 'max' are setted, the Angular CSS class 'ng-invalid' will be added to the input to indicate an invalid value.
 
 ```html
     <input currencyMask [(ngModel)]="value" min="-10.50" max="100.75" />
