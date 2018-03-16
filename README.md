@@ -40,12 +40,12 @@ export class AppModule {}
 
 ### Options 
 
-You can set options...
+You can set options as follows:
 
 ```html
     <!-- example for pt-BR money -->
     <input currencyMask [(ngModel)]="value" [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"/>
-```  
+```
 
 Available options: 
 
@@ -85,6 +85,14 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     bootstrap: [AppComponent]
 })
 export class AppModule {}
+```
+
+### Validation
+
+This directive also provides built-in validation for min and max accepted values. If the attributes 'min' and / or 'max' are setted, the Angular CSS class 'ng-invalid' will be added to the input to indicate an invalid value.
+
+```html
+    <input currencyMask [(ngModel)]="value" min="-10.50" max="100.75" />
 ```
 
 ## Quick fixes

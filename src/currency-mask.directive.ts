@@ -1,5 +1,5 @@
 import { AfterViewInit, Directive, DoCheck, ElementRef, forwardRef, HostListener, Inject, KeyValueDiffer, KeyValueDiffers, Input, OnInit, Optional } from "@angular/core";
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
+import { AbstractControl, ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR, Validator } from "@angular/forms";
 
 import { CurrencyMaskConfig, CURRENCY_MASK_CONFIG } from "./currency-mask.config";
 import { InputHandler } from "./input.handler";
@@ -12,10 +12,15 @@ export const CURRENCYMASKDIRECTIVE_VALUE_ACCESSOR: any = {
 
 @Directive({
     selector: "[currencyMask]",
-    providers: [CURRENCYMASKDIRECTIVE_VALUE_ACCESSOR]
+    providers: [
+        CURRENCYMASKDIRECTIVE_VALUE_ACCESSOR,
+        { provide: NG_VALIDATORS, useExisting: CurrencyMaskDirective, multi: true }
+    ]
 })
-export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccessor, DoCheck, OnInit {
+export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccessor, DoCheck, OnInit, Validator {
 
+    @Input() max: number;
+    @Input() min: number;
     @Input() options: any = {};
 
     inputHandler: InputHandler;
@@ -120,6 +125,20 @@ export class CurrencyMaskDirective implements AfterViewInit, ControlValueAccesso
 
     setDisabledState(value: boolean): void {
         this.elementRef.nativeElement.disabled = value;
+    }
+
+    validate(abstractControl: AbstractControl): { [key: string]: any; } {
+        let result: any = {};
+
+        if (abstractControl.value > this.max) {
+            result.max = true;
+        }
+
+        if (abstractControl.value < this.min) {
+            result.min = true;
+        }
+
+        return result != {} ? result : null;
     }
 
     writeValue(value: number): void {
