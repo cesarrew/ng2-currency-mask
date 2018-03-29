@@ -1,157 +1,172 @@
 import { InputManager } from './input.manager';
 
 export class InputService {
+  private inputManager: InputManager;
 
-    private inputManager: InputManager;
+  constructor(private htmlInputElement: any, private options: any) {
+    this.inputManager = new InputManager(htmlInputElement);
+  }
 
-    constructor(private htmlInputElement: any, private options: any) {
-        this.inputManager = new InputManager(htmlInputElement);
+  focus(): void {
+    if (this.options.removeMaskDuringEntry) {
+      this.rawValue = isNaN(this.value) || this.value === null ? '' : this.value.toString();
+    }
+    if (this.options.selectOnFocus) {
+      this.inputManager.selectAll();
+    }
+  }
+
+  blur(): void {
+    if (this.options.removeMaskDuringEntry) {
+      this.rawValue = this.applyMask(false, this.rawValue);
+    }
+  }
+
+  addNumber(keyCode: number): void {
+    if (!this.rawValue && !this.options.removeMaskDuringEntry) {
+      this.rawValue = this.applyMask(false, '0');
     }
 
-    focus(): void {
-        if (this.options.removeMaskDuringEntry) {
-            this.rawValue = this.value.toString();
-        }
-        if (this.options.selectOnFocus) {
-            this.inputManager.selectAll();
-        }
+    const keyChar = String.fromCharCode(keyCode);
+    const { decimal, thousands } = this.options;
+
+    if (!keyChar.replace(new RegExp('[^0-9' + decimal + thousands + '-]', 'g'), '')) {
+      return;
     }
 
-    blur(): void {
-        if (this.options.removeMaskDuringEntry) {
-            this.rawValue = this.applyMask(false, this.rawValue || '');
-        }
+    const selectionStart = this.inputSelection.selectionStart;
+    const selectionEnd = this.inputSelection.selectionEnd;
+    this.rawValue =
+      this.rawValue.substring(0, selectionStart) +
+      keyChar +
+      this.rawValue.substring(selectionEnd, this.rawValue.length);
+    this.updateFieldValue(selectionStart + 1);
+  }
+
+  applyMask(isNumber: boolean, rawValue: string): string {
+    const { allowNegative, decimal, precision, prefix, suffix, thousands } = this.options;
+    rawValue = isNumber ? Number.parseFloat(rawValue).toFixed(precision) : rawValue;
+
+    if (!rawValue.replace(/[^0-9]/g, '')) {
+      return null;
     }
 
-    addNumber(keyCode: number): void {
-        if (!this.rawValue) {
-            this.rawValue = this.applyMask(false, '0');
-        }
+    rawValue = rawValue
+      .replace(this.options.prefix, '')
+      .replace(this.options.suffix, '')
+      .replace(new RegExp('[^0-9' + decimal + thousands + '-]', 'g'), '');
 
-        const keyChar = String.fromCharCode(keyCode);
-        const selectionStart = this.inputSelection.selectionStart;
-        const selectionEnd = this.inputSelection.selectionEnd;
-        this.rawValue = this.rawValue.substring(0, selectionStart) + keyChar + this.rawValue.substring(selectionEnd, this.rawValue.length);
-        this.updateFieldValue(selectionStart + 1);
+    let integerPart = rawValue
+      .split(decimal)[0]
+      .replace(/^0*/g, '')
+      .replace(/\B(?=(\d{3})+(?!\d))/g, thousands);
+
+    if (integerPart === '') {
+      integerPart = '0';
     }
 
-    applyMask(isNumber: boolean, rawValue: string): string {
-        const { allowNegative, decimal, precision, prefix, suffix, thousands } = this.options;
-        rawValue = isNumber ? Number.parseFloat(rawValue).toFixed(precision) : rawValue;
+    let newRawValue = integerPart;
+    let decimalPart = rawValue.split(decimal)[1] || '0';
 
-        if (!rawValue.replace(/[^0-9]/g, '')) {
-            return '';
-        }
+    if (precision > 0) {
+      while (decimalPart.length < precision) {
+        decimalPart = decimalPart + '0';
+      }
 
-        let integerPart = rawValue
-            .split(decimal)[0].replace(/^0*/g, '')
-            .replace(/\B(?=(\d{3})+(?!\d))/g, thousands);
-
-        if (integerPart === '') {
-            integerPart = '0';
-        }
-
-        let newRawValue = integerPart;
-        let decimalPart = rawValue.split(decimal)[1] || '0';
-
-        if (precision > 0) {
-            while (decimalPart.length < precision) {
-                decimalPart = decimalPart + '0';
-            }
-
-            newRawValue += decimal + decimalPart;
-        }
-
-        const isZero = parseInt(integerPart, 10) === 0 && (parseInt(decimalPart, 10) === 0 || decimalPart === '');
-        const operator = (rawValue.indexOf('-') > -1 && allowNegative && !isZero) ? '-' : '';
-        return operator + prefix + newRawValue + suffix;
+      newRawValue += decimal + decimalPart;
     }
 
-    clearMask(rawValue: string): number {
-        if (rawValue == null || rawValue == "") {
-            return null;
-        }
+    const isZero = parseInt(integerPart, 10) === 0 && (parseInt(decimalPart, 10) === 0 || decimalPart === '');
+    const operator = rawValue.indexOf('-') > -1 && allowNegative && !isZero ? '-' : '';
+    return operator + prefix + newRawValue + suffix;
+  }
 
-        let value = rawValue.replace(this.options.prefix, '').replace(this.options.suffix, '');
-
-        if (this.options.thousands) {
-            value = value.replace(new RegExp('\\' + this.options.thousands, 'g'), '');
-        }
-
-        if (this.options.decimal) {
-            value = value.replace(this.options.decimal, '.');
-        }
-
-        return parseFloat(value);
+  clearMask(rawValue: string): number {
+    if (rawValue == null || rawValue == '') {
+      return null;
     }
 
-    changeToNegative(): void {
-        if (this.options.allowNegative && this.rawValue !== '' && this.rawValue.charAt(0) !== '-' && this.value !== 0) {
-            this.rawValue = '-' + this.rawValue;
-        }
+    let value = rawValue.replace(this.options.prefix, '').replace(this.options.suffix, '');
+
+    if (this.options.thousands) {
+      value = value.replace(new RegExp('\\' + this.options.thousands, 'g'), '');
     }
 
-    changeToPositive(): void {
-        this.rawValue = this.rawValue.replace('-', '');
+    if (this.options.decimal) {
+      value = value.replace(this.options.decimal, '.');
     }
 
-    removeNumber(keyCode: number): void {
-        let selectionEnd = this.inputSelection.selectionEnd;
-        let selectionStart = this.inputSelection.selectionStart;
+    return parseFloat(value);
+  }
 
-        if (selectionStart > this.rawValue.length - this.options.suffix.length) {
-            selectionEnd = this.rawValue.length - this.options.suffix.length;
-            selectionStart = this.rawValue.length - this.options.suffix.length;
-        }
+  changeToNegative(): void {
+    if (this.options.allowNegative && this.rawValue !== '' && this.rawValue.charAt(0) !== '-' && this.value !== 0) {
+      this.rawValue = '-' + this.rawValue;
+    }
+  }
 
-        selectionEnd = keyCode === 46 || keyCode === 63272 ? selectionEnd + 1 : selectionEnd;
-        selectionStart = keyCode === 8 ? selectionStart - 1 : selectionStart;
-        this.rawValue = this.rawValue.substring(0, selectionStart) + this.rawValue.substring(selectionEnd, this.rawValue.length);
-        this.updateFieldValue(selectionStart);
+  changeToPositive(): void {
+    this.rawValue = this.rawValue.replace('-', '');
+  }
+
+  removeNumber(keyCode: number): void {
+    let selectionEnd = this.inputSelection.selectionEnd;
+    let selectionStart = this.inputSelection.selectionStart;
+
+    if (selectionStart > this.rawValue.length - this.options.suffix.length) {
+      selectionEnd = this.rawValue.length - this.options.suffix.length;
+      selectionStart = this.rawValue.length - this.options.suffix.length;
     }
 
-    updateFieldValue(selectionStart?: number): void {
-        selectionStart = selectionStart === undefined ? this.rawValue.length : selectionStart;
-        if (this.options.removeMaskDuringEntry) {
-            this.inputManager.updateValueAndCursor(this.rawValue, selectionStart);
-        } else {
-            const newRawValue = this.applyMask(false, this.rawValue || '');
-            selectionStart = selectionStart - (this.rawValue.length - newRawValue.length);
-            this.inputManager.updateValueAndCursor(newRawValue, selectionStart);
-        }
-    }
+    selectionEnd = keyCode === 46 || keyCode === 63272 ? selectionEnd + 1 : selectionEnd;
+    selectionStart = keyCode === 8 ? selectionStart - 1 : selectionStart;
+    this.rawValue =
+      this.rawValue.substring(0, selectionStart) + this.rawValue.substring(selectionEnd, this.rawValue.length);
+    this.updateFieldValue(selectionStart);
+  }
 
-    updateOptions(options: any): void {
-        const value: number = this.value;
-        this.options = options;
-        this.value = value;
+  updateFieldValue(selectionStart?: number): void {
+    selectionStart = selectionStart === undefined ? this.rawValue.length : selectionStart;
+    if (this.options.removeMaskDuringEntry) {
+      this.inputManager.updateValueAndCursor(this.rawValue, selectionStart);
+    } else {
+      const newRawValue = this.applyMask(false, this.rawValue || '');
+      selectionStart = selectionStart - (this.rawValue.length - newRawValue.length);
+      this.inputManager.updateValueAndCursor(newRawValue, selectionStart);
     }
+  }
 
-    get canInputMoreNumbers(): boolean {
-        return this.inputManager.canInputMoreNumbers;
-    }
+  updateOptions(options: any): void {
+    const value: number = this.value;
+    this.options = options;
+    this.value = value;
+  }
 
-    get inputSelection(): any {
-        return this.inputManager.inputSelection;
-    }
+  get canInputMoreNumbers(): boolean {
+    return this.inputManager.canInputMoreNumbers;
+  }
 
-    get rawValue(): string {
-        return this.inputManager.rawValue;
-    }
+  get inputSelection(): any {
+    return this.inputManager.inputSelection;
+  }
 
-    set rawValue(value: string) {
-        this.inputManager.rawValue = value;
-    }
+  get rawValue(): string {
+    return this.inputManager.rawValue;
+  }
 
-    get storedRawValue(): string {
-        return this.inputManager.storedRawValue;
-    }
+  set rawValue(value: string) {
+    this.inputManager.rawValue = value;
+  }
 
-    get value(): number {
-        return this.clearMask(this.rawValue);
-    }
+  get storedRawValue(): string {
+    return this.inputManager.storedRawValue;
+  }
 
-    set value(value: number) {
-        this.rawValue = this.applyMask(true, '' + value);
-    }
+  get value(): number {
+    return this.clearMask(this.rawValue);
+  }
+
+  set value(value: number) {
+    this.rawValue = this.applyMask(true, '' + value);
+  }
 }
