@@ -1,187 +1,194 @@
 import { InputService } from './input.service';
 
 export class InputHandler {
+  private inputService: InputService;
+  private onModelChange: Function;
+  private onModelTouched: Function;
+  private htmlInputElement: HTMLInputElement;
 
-    private inputService: InputService;
-    private onModelChange: Function;
-    private onModelTouched: Function;
-    private htmlInputElement: HTMLInputElement;
+  constructor(htmlInputElement: HTMLInputElement, options: any) {
+    this.inputService = new InputService(htmlInputElement, options);
+    this.htmlInputElement = htmlInputElement;
+  }
 
-    constructor(htmlInputElement: HTMLInputElement, options: any) {
-        this.inputService = new InputService(htmlInputElement, options);
-        this.htmlInputElement = htmlInputElement;
+  handleFocus(event: any): void {
+    this.inputService.focus();
+  }
+
+  handleBlur(event: any): void {
+    this.inputService.blur();
+  }
+
+  handleCut(event: any): void {
+    if (this.isReadOnly()) {
+      return;
     }
 
-    handleFocus(event: any): void {
-        this.inputService.focus();
+    setTimeout(() => {
+      this.inputService.updateFieldValue(true);
+      this.setValue(this.inputService.value);
+      this.onModelChange(this.inputService.value);
+    }, 0);
+  }
+
+  handleInput(event: any): void {
+    if (this.isReadOnly()) {
+      return;
     }
 
-    handleBlur(event: any): void {
-        this.inputService.blur();
+    const keyCode = this.inputService.rawValue.charCodeAt(this.inputService.rawValue.length - 1);
+    const rawValueLength = this.inputService.rawValue.length;
+    const rawValueSelectionEnd = this.inputService.inputSelection.selectionEnd;
+    const storedRawValueLength = this.inputService.storedRawValue.length;
+    this.inputService.rawValue = this.inputService.storedRawValue;
+
+    if (rawValueLength !== rawValueSelectionEnd || Math.abs(rawValueLength - storedRawValueLength) !== 1) {
+      this.setCursorPosition(event);
+      return;
     }
 
-    handleCut(event: any): void {
-        if (this.isReadOnly()) {
+    if (rawValueLength < storedRawValueLength) {
+      if (this.inputService.value !== 0) {
+        this.inputService.removeNumber(8);
+      } else {
+        this.setValue(null);
+      }
+    }
+
+    if (rawValueLength > storedRawValueLength) {
+      switch (keyCode) {
+        case 43:
+          this.inputService.changeToPositive();
+          break;
+        case 45:
+          this.inputService.changeToNegative();
+          break;
+        default:
+          if (
+            !this.inputService.canInputMoreNumbers ||
+            (isNaN(this.inputService.value) && String.fromCharCode(keyCode).match(/\d/) == null)
+          ) {
             return;
-        }
+          }
 
-        setTimeout(() => {
-            this.inputService.updateFieldValue();
-            this.setValue(this.inputService.value);
-            this.onModelChange(this.inputService.value);
-        }, 0);
+          this.inputService.addNumber(keyCode);
+      }
     }
 
-    handleInput(event: any): void {
-        if (this.isReadOnly()) {
-            return;
-        }
+    this.setCursorPosition(event);
+    this.onModelChange(this.inputService.value);
+  }
 
-        const keyCode = this.inputService.rawValue.charCodeAt(this.inputService.rawValue.length - 1);
-        const rawValueLength = this.inputService.rawValue.length;
-        const rawValueSelectionEnd = this.inputService.inputSelection.selectionEnd;
-        const storedRawValueLength = this.inputService.storedRawValue.length;
-        this.inputService.rawValue = this.inputService.storedRawValue;
+  handleKeydown(event: any): void {
+    if (this.isReadOnly()) {
+      return;
+    }
 
-        if (rawValueLength !== rawValueSelectionEnd || Math.abs(rawValueLength - storedRawValueLength) !== 1) {
-            this.setCursorPosition(event);
-            return;
-        }
+    const keyCode = event.which || event.charCode || event.keyCode;
 
-        if (rawValueLength < storedRawValueLength) {
-            if (this.inputService.value !== 0) {
-                this.inputService.removeNumber(8);
-            } else {
-                this.setValue(null);
-            }
-        }
+    if (keyCode === 8 || keyCode === 46 || keyCode === 63272) {
+      event.preventDefault();
+      const selectionRangeLength = Math.abs(
+        this.inputService.inputSelection.selectionEnd - this.inputService.inputSelection.selectionStart
+      );
 
-        if (rawValueLength > storedRawValueLength) {
-            switch (keyCode) {
-                case 43:
-                    this.inputService.changeToPositive();
-                    break;
-                case 45:
-                    this.inputService.changeToNegative();
-                    break;
-                default:
-                    if (!this.inputService.canInputMoreNumbers || (isNaN(this.inputService.value) &&
-                        String.fromCharCode(keyCode).match(/\d/) == null)) {
-                        return;
-                    }
-
-                    this.inputService.addNumber(keyCode);
-            }
-        }
-
-        this.setCursorPosition(event);
+      if (selectionRangeLength === this.inputService.rawValue.length || this.inputService.value === 0) {
+        this.setValue(null);
         this.onModelChange(this.inputService.value);
-    }
+      }
 
-    handleKeydown(event: any): void {
-        if (this.isReadOnly()) {
-            return;
-        }
-
-        const keyCode = event.which || event.charCode || event.keyCode;
-
-        if (keyCode === 8 || keyCode === 46 || keyCode === 63272) {
-            event.preventDefault();
-            const selectionRangeLength = Math.abs(this.inputService.inputSelection.selectionEnd -
-                this.inputService.inputSelection.selectionStart);
-
-            if (selectionRangeLength === this.inputService.rawValue.length || this.inputService.value === 0) {
-                this.setValue(null);
-                this.onModelChange(this.inputService.value);
-            }
-
-            if (selectionRangeLength === 0 && !isNaN(this.inputService.value)) {
-                this.inputService.removeNumber(keyCode);
-                this.onModelChange(this.inputService.value);
-            }
-        }
-    }
-
-    handleKeypress(event: any): void {
-        if (this.isReadOnly()) {
-            return;
-        }
-
-        const keyCode = event.which || event.charCode || event.keyCode;
-
-        if (keyCode === undefined || [9, 13].indexOf(keyCode) !== -1 || this.isArrowEndHomeKeyInFirefox(event)) {
-            return;
-        }
-
-        switch (keyCode) {
-            case 43:
-                this.inputService.changeToPositive();
-                break;
-            case 45:
-                this.inputService.changeToNegative();
-                break;
-            default:
-                if (this.inputService.canInputMoreNumbers && (!isNaN(this.inputService.value) ||
-                    String.fromCharCode(keyCode).match(/\d/) != null)) {
-                    this.inputService.addNumber(keyCode);
-                }
-        }
-
-        event.preventDefault();
+      if (selectionRangeLength === 0 && !isNaN(this.inputService.value)) {
+        this.inputService.removeNumber(keyCode);
         this.onModelChange(this.inputService.value);
+      }
+    }
+  }
+
+  handleKeypress(event: any): void {
+    if (this.isReadOnly()) {
+      return;
     }
 
-    handlePaste(event: any): void {
-        if (this.isReadOnly()) {
-            return;
+    const keyCode = event.which || event.charCode || event.keyCode;
+
+    if (keyCode === undefined || [9, 13].indexOf(keyCode) !== -1 || this.isArrowEndHomeKeyInFirefox(event)) {
+      return;
+    }
+
+    switch (keyCode) {
+      case 43:
+        this.inputService.changeToPositive();
+        break;
+      case 45:
+        this.inputService.changeToNegative();
+        break;
+      default:
+        if (
+          this.inputService.canInputMoreNumbers &&
+          (!isNaN(this.inputService.value) || String.fromCharCode(keyCode).match(/\d/) != null)
+        ) {
+          this.inputService.addNumber(keyCode);
         }
-
-        setTimeout(() => {
-            this.inputService.updateFieldValue();
-            this.setValue(this.inputService.value);
-            this.onModelChange(this.inputService.value);
-        }, 1);
     }
 
-    updateOptions(options: any): void {
-        this.inputService.updateOptions(options);
+    event.preventDefault();
+    this.onModelChange(this.inputService.value);
+  }
+
+  handlePaste(event: any): void {
+    if (this.isReadOnly()) {
+      return;
     }
 
-    getOnModelChange(): Function {
-        return this.onModelChange;
+    setTimeout(() => {
+      this.inputService.updateFieldValue(true);
+      this.setValue(this.inputService.value);
+      this.onModelChange(this.inputService.value);
+    }, 1);
+  }
+
+  updateOptions(options: any): void {
+    this.inputService.updateOptions(options);
+  }
+
+  getOnModelChange(): Function {
+    return this.onModelChange;
+  }
+
+  setOnModelChange(callbackFunction: Function): void {
+    this.onModelChange = callbackFunction;
+  }
+
+  getOnModelTouched(): Function {
+    return this.onModelTouched;
+  }
+
+  setOnModelTouched(callbackFunction: Function) {
+    this.onModelTouched = callbackFunction;
+  }
+
+  setValue(value: number): void {
+    this.inputService.value = value;
+  }
+
+  private isArrowEndHomeKeyInFirefox(event: any) {
+    if (
+      [35, 36, 37, 38, 39, 40].indexOf(event.keyCode) !== -1 &&
+      (event.charCode === undefined || event.charCode === 0)
+    ) {
+      return true;
     }
 
-    setOnModelChange(callbackFunction: Function): void {
-        this.onModelChange = callbackFunction;
-    }
+    return false;
+  }
 
-    getOnModelTouched(): Function {
-        return this.onModelTouched;
-    }
+  private isReadOnly() {
+    return this.htmlInputElement && this.htmlInputElement.readOnly;
+  }
 
-    setOnModelTouched(callbackFunction: Function) {
-        this.onModelTouched = callbackFunction;
-    }
-
-    setValue(value: number): void {
-        this.inputService.value = value;
-    }
-
-    private isArrowEndHomeKeyInFirefox(event: any) {
-        if ([35, 36, 37, 38, 39, 40].indexOf(event.keyCode) !== -1 && (event.charCode === undefined || event.charCode === 0)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    private isReadOnly() {
-        return this.htmlInputElement && this.htmlInputElement.readOnly;
-    }
-
-    private setCursorPosition(event: any): void {
-        setTimeout(function () {
-            event.target.setSelectionRange(event.target.value.length, event.target.value.length);
-        }, 0);
-    }
+  private setCursorPosition(event: any): void {
+    setTimeout(function() {
+      event.target.setSelectionRange(event.target.value.length, event.target.value.length);
+    }, 0);
+  }
 }

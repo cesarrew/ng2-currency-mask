@@ -23,56 +23,87 @@ export class InputService {
   }
 
   addNumber(keyCode: number): void {
-    if (!this.rawValue && !this.options.removeMaskDuringEntry) {
+    const { direction, decimal, precision, prefix, thousands, removeMaskDuringEntry } = this.options;
+    if (!this.rawValue && !removeMaskDuringEntry) {
       this.rawValue = this.applyMask(false, '0');
     }
 
     const keyChar = String.fromCharCode(keyCode);
-    const { decimal, thousands } = this.options;
 
     if (!keyChar.replace(new RegExp('[^0-9' + decimal + thousands + '-]', 'g'), '')) {
       return;
     }
 
-    const selectionStart = this.inputSelection.selectionStart;
+    let selectionStart = this.inputSelection.selectionStart;
     const selectionEnd = this.inputSelection.selectionEnd;
+
+    if (
+      direction === 'LTR' &&
+      this.rawValue.includes(decimal) &&
+      this.rawValue.split(decimal)[1].length === precision &&
+      selectionStart === selectionEnd &&
+      this.rawValue.length - selectionStart <= precision
+    ) {
+      return;
+    }
+
     this.rawValue =
       this.rawValue.substring(0, selectionStart) +
       keyChar +
       this.rawValue.substring(selectionEnd, this.rawValue.length);
-    this.updateFieldValue(selectionStart + 1);
+
+    if (this.rawValue.length === 1 && direction === 'LTR') {
+      selectionStart = -(prefix.length + precision + decimal.length + 1) + this.rawValue.length + prefix.length;
+    }
+
+    this.updateFieldValue(!removeMaskDuringEntry, selectionStart + 1);
   }
 
   applyMask(isNumber: boolean, rawValue: string): string {
-    const { allowNegative, decimal, precision, prefix, suffix, thousands } = this.options;
+    const { direction, allowNegative, decimal, precision, prefix, suffix, thousands } = this.options;
     rawValue = isNumber ? Number.parseFloat(rawValue).toFixed(precision) : rawValue;
+    const onlyNumbers = rawValue.replace(/[^0-9]/g, '');
 
-    if (!rawValue.replace(/[^0-9]/g, '')) {
+    if (!onlyNumbers) {
       return null;
     }
 
-    rawValue = rawValue
-      .replace(this.options.prefix, '')
-      .replace(this.options.suffix, '')
-      .replace(new RegExp('[^0-9' + decimal + thousands + '-]', 'g'), '');
+    let integerPart: string, decimalPart: string;
 
-    let integerPart = rawValue
-      .split(decimal)[0]
-      .replace(/^0*/g, '')
-      .replace(/\B(?=(\d{3})+(?!\d))/g, thousands);
+    if (direction === 'LTR') {
+      integerPart = rawValue
+        .replace(prefix, '')
+        .replace(suffix, '')
+        .replace(new RegExp('[^0-9' + decimal + '-]', 'g'), '')
+        .split(decimal)[0]
+        .replace(/^0*/g, '')
+        .replace(/\B(?=(\d{3})+(?!\d))/g, thousands);
+    } else {
+      integerPart = onlyNumbers
+        .slice(0, onlyNumbers.length - precision)
+        .replace(/^0*/g, '')
+        .replace(/\B(?=(\d{3})+(?!\d))/g, thousands);
+    }
 
     if (integerPart === '') {
       integerPart = '0';
     }
 
     let newRawValue = integerPart;
-    let decimalPart = rawValue.split(decimal)[1] || '0';
+    if (direction === 'LTR') {
+      decimalPart = rawValue.split(decimal)[1] || '0';
+    } else {
+      decimalPart = onlyNumbers.slice(onlyNumbers.length - precision);
+    }
 
     if (precision > 0) {
       while (decimalPart.length < precision) {
-        decimalPart = decimalPart + '0';
+        if (direction === 'LTR') {
+          decimalPart = decimalPart + '0';
+        } else {
+          decimalPart = '0' + decimalPart;
+        }
       }
-
       newRawValue += decimal + decimalPart;
     }
 
@@ -110,29 +141,42 @@ export class InputService {
   }
 
   removeNumber(keyCode: number): void {
+    const { direction, decimal, precision, prefix, suffix, thousands, removeMaskDuringEntry } = this.options;
     let selectionEnd = this.inputSelection.selectionEnd;
     let selectionStart = this.inputSelection.selectionStart;
+    const decimalLocation = this.rawValue.indexOf(decimal);
 
-    if (selectionStart > this.rawValue.length - this.options.suffix.length) {
-      selectionEnd = this.rawValue.length - this.options.suffix.length;
-      selectionStart = this.rawValue.length - this.options.suffix.length;
+    if (direction === 'LTR') {
+      if (keyCode === 8 && selectionStart === selectionEnd && decimalLocation === selectionStart - 1) {
+        return;
+      }
+      if (keyCode === 46 && selectionStart === selectionEnd && decimalLocation === selectionStart) {
+        return;
+      }
+    }
+
+    if (selectionStart > this.rawValue.length - suffix.length) {
+      selectionEnd = this.rawValue.length - suffix.length;
+      selectionStart = this.rawValue.length - suffix.length;
     }
 
     selectionEnd = keyCode === 46 || keyCode === 63272 ? selectionEnd + 1 : selectionEnd;
     selectionStart = keyCode === 8 ? selectionStart - 1 : selectionStart;
     this.rawValue =
       this.rawValue.substring(0, selectionStart) + this.rawValue.substring(selectionEnd, this.rawValue.length);
-    this.updateFieldValue(selectionStart);
+    const applyMask = !removeMaskDuringEntry && (direction === 'LTR' && selectionStart < decimalLocation);
+
+    this.updateFieldValue(applyMask, selectionStart);
   }
 
-  updateFieldValue(selectionStart?: number): void {
+  updateFieldValue(applyMask: boolean, selectionStart?: number): void {
     selectionStart = selectionStart === undefined ? this.rawValue.length : selectionStart;
-    if (this.options.removeMaskDuringEntry) {
-      this.inputManager.updateValueAndCursor(this.rawValue, selectionStart);
-    } else {
+    if (applyMask) {
       const newRawValue = this.applyMask(false, this.rawValue || '');
       selectionStart = selectionStart - (this.rawValue.length - newRawValue.length);
       this.inputManager.updateValueAndCursor(newRawValue, selectionStart);
+    } else {
+      this.inputManager.updateValueAndCursor(this.rawValue, selectionStart);
     }
   }
 
