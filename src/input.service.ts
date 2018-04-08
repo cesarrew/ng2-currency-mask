@@ -63,7 +63,9 @@ export class InputService {
             value = value.replace(this.options.decimal, ".");
         }
 
-        return parseFloat(value);
+        return this.options.useIntegers ?
+            parseFloat(value) * (10 ** this.options.precision)
+            : parseFloat(value) ;
     }
 
     changeToNegative(): void {
@@ -176,6 +178,9 @@ export class InputService {
     }
 
     set value(value: number) {
+        if (value && this.options.useIntegers) {
+            value = value / (10 ** this.options.precision);
+        }
         this.rawValue = this.applyMask(true, "" + value);
     }
 }

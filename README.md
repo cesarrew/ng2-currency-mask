@@ -56,6 +56,7 @@ Available options:
  * `prefix` - Money prefix (default: `'$ '`)
  * `suffix` - Money suffix (default: `''`)
  * `thousands` - Separator of thousands (default: `','`)
+ * `useIntegers` - Automatically transforms from and to integers in your model (default: `false`)
 
 You can also set options globally...
 
