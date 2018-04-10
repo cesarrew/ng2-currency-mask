@@ -4,7 +4,8 @@
   "description": "A very simple currency mask directive that allows using a number attribute with the ngModel.",
   "scripts": {
     "prepublish": "ngc",
-    "build": "tsc"
+    "build": "tsc",
+    "postinstall": "tsc"
   },
   "repository": {
     "type": "git",
