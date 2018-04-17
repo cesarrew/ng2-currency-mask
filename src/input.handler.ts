@@ -112,6 +112,23 @@ export class InputHandler {
             return;
         }
 
+        //Copy/Cut, call the right methods
+		if(event.charCode == 118 && event.ctrlKey)
+		{
+			this.handlePaste(event);
+			return;
+		}
+		
+		if(event.charCode == 120 && event.ctrlKey)
+		{
+			this.handleCut(event);
+			return;
+		}
+		
+		//Paste. Nothing to do here
+		if(event.charCode == 99 && event.ctrlKey)
+			return;
+
         let keyCode = event.which || event.charCode || event.keyCode;
 
         if (keyCode == undefined || [9, 13].indexOf(keyCode) != -1 || this.isArrowEndHomeKeyInFirefox(event)) {
