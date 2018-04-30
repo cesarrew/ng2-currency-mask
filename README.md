@@ -51,6 +51,7 @@ Available options:
 
  * `align` - Text alignment in input. (default: `right`)
  * `allowNegative` - If `true` can input negative values.  (default: `true`)
+ * `dropSpecialCharacters` - If `true` the output will only be numbers, with no decimal or thousands separator.  (default: `false`)
  * `decimal` -  Separator of decimals (default: `'.'`)
  * `precision` - Number of decimal places (default: `2`)
  * `prefix` - Money prefix (default: `'$ '`)
@@ -66,6 +67,7 @@ import { CurrencyMaskConfig, CURRENCY_MASK_CONFIG } from "ng2-currency-mask/src/
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "right",
     allowNegative: true,
+    dropSpecialCharacters: false,
     decimal: ",",
     precision: 2,
     prefix: "R$ ",
@@ -87,6 +89,13 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
 export class AppModule {}
 ```
 
+### dropSpecialCharacters 
+
+```html
+    <input currencyMask [(ngModel)]="value" [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', dropSpecialCharacters: true }"/>
+    <!-- value viewed: R$ 123,90 -->
+    <!-- value model: 12390 -->
+```
 ### Validation
 
 This directive also provides built-in validation for minimum and maximum values. If the attributes 'min' and / or 'max' are setted, the Angular CSS class 'ng-invalid' will be added to the input to indicate an invalid value.
