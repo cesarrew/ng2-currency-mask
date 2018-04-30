@@ -62,7 +62,11 @@ export class InputService {
         if (this.options.decimal) {
             value = value.replace(this.options.decimal, ".");
         }
-
+        
+        if(this.options.dropSpecialCharacters){
+            value = value.replace(".", "");
+        }
+        
         return parseFloat(value);
     }
 
