@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ErickXavier/ng2-currency-mask.git"
+    "url": "git+https://github.com/cesarrew/ng2-currency-mask.git"
   },
   "keywords": [
     "angular",
@@ -16,7 +16,7 @@
     "angular4",
     "angular5",
     "currency",
-    "mask",
+    "mas",
     "model",
     "money",
     "ng2",
@@ -27,9 +27,9 @@
   "author": "César Mendonça",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ErickXavier/ng2-currency-mask/issues"
+    "url": "https://github.com/cesarrew/ng2-currency-mask/issues"
   },
-  "homepage": "https://github.com/ErickXavier/ng2-currency-mask",
+  "homepage": "https://github.com/cesarrew/ng2-currency-mask",
   "devDependencies": {
     "@angular/common": "5.2.0",
     "@angular/compiler": "5.2.0",
