@@ -2,7 +2,7 @@ export class InputManager {
 
     private _storedRawValue: string;
 
-    constructor(private htmlInputElement: any) {
+    constructor(private htmlInputElement: any, private _renderer: any) {
     }
 
     setCursorAt(position: number): void {
@@ -81,7 +81,7 @@ export class InputManager {
         this._storedRawValue = value;
 
         if (this.htmlInputElement) {
-            this.htmlInputElement.value = value;
+            this._renderer.setAttribute(this.htmlInputElement, "value", value);
         }
     }
 
