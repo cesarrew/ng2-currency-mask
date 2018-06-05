@@ -4,8 +4,8 @@ export class InputService {
 
     private inputManager: InputManager;
 
-    constructor(private htmlInputElement: any, private options: any) {
-        this.inputManager = new InputManager(htmlInputElement);
+    constructor(private htmlInputElement: any, private options: any, private _render: any) {
+        this.inputManager = new InputManager(htmlInputElement, _render);
     }
 
     addNumber(keyCode: number): void {

@@ -7,8 +7,8 @@ export class InputHandler {
     private onModelTouched: Function;
     private htmlInputElement: HTMLInputElement;
 
-    constructor(htmlInputElement: HTMLInputElement, options: any) {
-        this.inputService = new InputService(htmlInputElement, options);
+    constructor(htmlInputElement: HTMLInputElement, options: any, renderer: any) {
+        this.inputService = new InputService(htmlInputElement, options, renderer);
         this.htmlInputElement = htmlInputElement;
     }
 
