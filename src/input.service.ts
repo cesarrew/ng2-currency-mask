@@ -63,7 +63,13 @@ export class InputService {
             value = value.replace(this.options.decimal, ".");
         }
 
-        return parseFloat(value);
+        let result = parseFloat(value);
+
+        if (this.options.requireDecimal) {
+            result = <any>result.toFixed(2);
+        }
+
+        return result;
     }
 
     changeToNegative(): void {
