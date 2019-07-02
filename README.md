@@ -37,6 +37,10 @@ export class AppModule {}
 ```
 
  * `ngModel` An attribute of type number. If is displayed `'$ 25.63'`, the attribute will be `'25.63'`.
+ 
+ ### Sample StackBlitz
+ 
+ You can get started playing around with the library rightaway using this [StackBlitz Sample](https://stackblitz.com/edit/ng2-currency-mask-sample?file=src/app/app.component.html)
 
 ### Options 
 
