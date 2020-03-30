@@ -1,5 +1,0 @@
-*.ts
-!*.d.ts
-aot
-node_modules
-npm-debug.log

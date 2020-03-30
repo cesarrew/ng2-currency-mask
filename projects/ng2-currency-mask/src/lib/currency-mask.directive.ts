@@ -1,6 +1,5 @@
-import { AfterViewInit, Directive, DoCheck, ElementRef, forwardRef, HostListener, Inject, KeyValueDiffer, KeyValueDiffers, Input, OnInit, Optional } from "@angular/core";
+import { AfterViewInit, Directive, DoCheck, ElementRef, forwardRef, HostListener, Inject, Input, KeyValueDiffer, KeyValueDiffers, OnInit, Optional } from "@angular/core";
 import { AbstractControl, ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR, Validator } from "@angular/forms";
-
 import { CurrencyMaskConfig, CURRENCY_MASK_CONFIG } from "./currency-mask.config";
 import { InputHandler } from "./input.handler";
 
