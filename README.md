@@ -60,8 +60,7 @@ Available options:
 You can also set options globally...
 
 ```ts
-import { CurrencyMaskModule } from "ng2-currency-mask";
-import { CurrencyMaskConfig, CURRENCY_MASK_CONFIG } from "ng2-currency-mask/src/currency-mask.config";
+import { CurrencyMaskConfig, CurrencyMaskModule, CURRENCY_MASK_CONFIG } from 'ng2-currency-mask';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "right",
