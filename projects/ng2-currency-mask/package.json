@@ -20,9 +20,11 @@
         "url": "https://github.com/cesarrew/ng2-currency-mask/issues"
     },
     "homepage": "https://github.com/cesarrew/ng2-currency-mask",
+    "dependencies": {
+      "tslib": "^2.0.0"
+    },
     "peerDependencies": {
         "@angular/common": "^9.1.0",
-        "@angular/core": "^9.1.0",
-        "tslib": "^1.10.0"
+        "@angular/core": "^9.1.0"
     }
 }
