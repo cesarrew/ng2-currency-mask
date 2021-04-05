@@ -1,51 +1,51 @@
 {
-  "name": "ng2-currency-mask",
-  "version": "9.0.2",
-  "description": "A very simple currency mask directive that allows using a number attribute with the ngModel.",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/cesarrew/ng2-currency-mask.git"
-  },
-  "keywords": [
-    "angular",
-    "currency",
-    "mask",
-    "model",
-    "money",
-    "number"
-  ],
-  "author": "César Mendonça",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/cesarrew/ng2-currency-mask/issues"
-  },
-  "homepage": "https://github.com/cesarrew/ng2-currency-mask",
-  "scripts": {
-    "ng": "ng",
-    "build": "ng build"
-  },
-  "dependencies": {
-    "@angular/animations": "~11.2.8",
-    "@angular/common": "~11.2.8",
-    "@angular/compiler": "~11.2.8",
-    "@angular/core": "~11.2.8",
-    "@angular/forms": "~11.2.8",
-    "@angular/platform-browser": "~11.2.8",
-    "@angular/platform-browser-dynamic": "~11.2.8",
-    "@angular/router": "~11.2.8",
-    "rxjs": "~6.5.4",
-    "tslib": "^2.0.0",
-    "zone.js": "~0.10.2"
-  },
-  "devDependencies": {
-    "@angular-devkit/build-angular": "~0.1102.7",
-    "@angular/cli": "~11.2.7",
-    "@angular/compiler-cli": "~11.2.8",
-    "@angular/language-service": "~11.2.8",
-    "@types/node": "^12.11.1",
-    "ng-packagr": "^11.2.4",
-    "ts-node": "~8.3.0",
-    "tslint": "~6.1.0",
-    "typescript": "~4.0.7"
-  }
+    "name": "ng2-currency-mask",
+    "version": "11.0.0",
+    "description": "A very simple currency mask directive that allows using a number attribute with the ngModel.",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/cesarrew/ng2-currency-mask.git"
+    },
+    "keywords": [
+        "angular",
+        "currency",
+        "mask",
+        "model",
+        "money",
+        "number"
+    ],
+    "author": "César Mendonça",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/cesarrew/ng2-currency-mask/issues"
+    },
+    "homepage": "https://github.com/cesarrew/ng2-currency-mask",
+    "scripts": {
+        "ng": "ng",
+        "build": "ng build"
+    },
+    "dependencies": {
+        "@angular/animations": "~11.2.8",
+        "@angular/common": "~11.2.8",
+        "@angular/compiler": "~11.2.8",
+        "@angular/core": "~11.2.8",
+        "@angular/forms": "~11.2.8",
+        "@angular/platform-browser": "~11.2.8",
+        "@angular/platform-browser-dynamic": "~11.2.8",
+        "@angular/router": "~11.2.8",
+        "rxjs": "~6.5.4",
+        "tslib": "^2.0.0",
+        "zone.js": "~0.10.2"
+    },
+    "devDependencies": {
+        "@angular-devkit/build-angular": "~0.1102.7",
+        "@angular/cli": "~11.2.7",
+        "@angular/compiler-cli": "~11.2.8",
+        "@angular/language-service": "~11.2.8",
+        "@types/node": "^12.11.1",
+        "ng-packagr": "^11.2.4",
+        "ts-node": "~8.3.0",
+        "tslint": "~6.1.0",
+        "typescript": "~4.0.7"
+    }
 }
