@@ -642,7 +642,7 @@
             }] });
 
     /*
-     * Public API Surface of currency-mask
+     * Public API Surface of ng2-currency-mask
      */
 
     /**

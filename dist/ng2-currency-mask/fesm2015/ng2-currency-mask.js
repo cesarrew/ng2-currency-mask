@@ -572,7 +572,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "12.2.2", ngImpor
         }] });
 
 /*
- * Public API Surface of currency-mask
+ * Public API Surface of ng2-currency-mask
  */
 
 /**

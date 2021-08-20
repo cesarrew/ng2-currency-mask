@@ -3,23 +3,23 @@
     "version": 1,
     "newProjectRoot": "projects",
     "projects": {
-        "currency-mask": {
+        "ng2-currency-mask": {
             "projectType": "library",
-            "root": "projects/currency-mask",
-            "sourceRoot": "projects/currency-mask/src",
+            "root": "projects/ng2-currency-mask",
+            "sourceRoot": "projects/ng2-currency-mask/src",
             "prefix": "lib",
             "architect": {
                 "build": {
                     "builder": "@angular-devkit/build-angular:ng-packagr",
                     "options": {
-                        "project": "projects/currency-mask/ng-package.json"
+                        "project": "projects/ng2-currency-mask/ng-package.json"
                     },
                     "configurations": {
                         "production": {
-                            "tsConfig": "projects/currency-mask/tsconfig.lib.prod.json"
+                            "tsConfig": "projects/ng2-currency-mask/tsconfig.lib.prod.json"
                         },
                         "development": {
-                            "tsConfig": "projects/currency-mask/tsconfig.lib.json"
+                            "tsConfig": "projects/ng2-currency-mask/tsconfig.lib.json"
                         }
                     },
                     "defaultConfiguration": "production"
@@ -27,5 +27,5 @@
             }
         }
     },
-    "defaultProject": "currency-mask"
+    "defaultProject": "ng2-currency-mask"
 }
