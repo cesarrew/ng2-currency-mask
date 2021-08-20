@@ -185,6 +185,8 @@ export class InputHandler {
                 return newString.charCodeAt(x);
             }
         }
+
+        return null;
     }
 
     private isArrowEndHomeKeyInFirefox(event: any) {
