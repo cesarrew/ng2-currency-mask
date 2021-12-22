@@ -23,6 +23,12 @@
                         }
                     },
                     "defaultConfiguration": "production"
+                },
+                "lint": {
+                    "builder": "@angular-eslint/builder:lint",
+                    "options": {
+                        "lintFilePatterns": ["projects/ng2-currency-mask/src/**/*.ts", "projects/ng2-currency-mask/src/**/*.html"]
+                    }
                 }
             }
         },
@@ -68,13 +74,8 @@
                         "main": "projects/library-test/src/main.ts",
                         "polyfills": "projects/library-test/src/polyfills.ts",
                         "tsConfig": "projects/library-test/tsconfig.app.json",
-                        "assets": [
-                            "projects/library-test/src/favicon.ico",
-                            "projects/library-test/src/assets"
-                        ],
-                        "styles": [
-                            "projects/library-test/src/styles.css"
-                        ],
+                        "assets": ["projects/library-test/src/favicon.ico", "projects/library-test/src/assets"],
+                        "styles": ["projects/library-test/src/styles.css"],
                         "scripts": []
                     },
                     "configurations": {
@@ -126,6 +127,12 @@
                     "builder": "@angular-devkit/build-angular:extract-i18n",
                     "options": {
                         "browserTarget": "library-test:build"
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-eslint/builder:lint",
+                    "options": {
+                        "lintFilePatterns": ["projects/library-test/src/**/*.ts", "projects/library-test/src/**/*.html"]
                     }
                 }
             }
