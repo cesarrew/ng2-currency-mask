@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { FormControl } from "@angular/forms";
 
 @Component({
     selector: "app-root",
@@ -6,5 +7,6 @@ import { Component } from "@angular/core";
     styles: [],
 })
 export class AppComponent {
-    value: number = 10;
+    reactiveFormControl = new FormControl(10);
+    templateDrivenValue: number = 20;
 }

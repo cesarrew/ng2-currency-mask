@@ -1,1 +1,6 @@
-<input currencyMask [(ngModel)]="value" [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" />
+<input currencyMask [formControl]="reactiveFormControl" [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" />
+
+<br />
+<br />
+
+<input currencyMask [(ngModel)]="templateDrivenValue" [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" />
