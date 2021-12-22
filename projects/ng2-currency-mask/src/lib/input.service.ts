@@ -1,7 +1,6 @@
 import { InputManager } from "./input.manager";
 
 export class InputService {
-
     private inputManager: InputManager;
 
     constructor(private htmlInputElement: any, private options: any) {
@@ -29,7 +28,10 @@ export class InputService {
             return "";
         }
 
-        let integerPart = onlyNumbers.slice(0, onlyNumbers.length - precision).replace(/^0*/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, thousands);
+        let integerPart = onlyNumbers
+            .slice(0, onlyNumbers.length - precision)
+            .replace(/^0*/g, "")
+            .replace(/\B(?=(\d{3})+(?!\d))/g, thousands);
 
         if (integerPart == "") {
             integerPart = "0";
@@ -44,11 +46,11 @@ export class InputService {
         }
 
         let isZero = parseInt(integerPart) == 0 && (parseInt(decimalPart) == 0 || decimalPart == "");
-        let operator = (rawValue.indexOf("-") > -1 && allowNegative && !isZero) ? "-" : "";
+        let operator = rawValue.indexOf("-") > -1 && allowNegative && !isZero ? "-" : "";
         return operator + prefix + newRawValue + suffix;
     }
 
-    clearMask(rawValue: string): number {
+    clearMask(rawValue: string): number | null {
         if (rawValue == null || rawValue == "") {
             return null;
         }
@@ -118,7 +120,10 @@ export class InputService {
             }
 
             //delete key and the target digit is the decimal or thousands divider
-            if ((keyCode == 46 || keyCode == 63272) && (this.rawValue.substring(selectionStart, selectionEnd + 1) == decimal || this.rawValue.substring(selectionStart, selectionEnd + 1) == thousands)) {
+            if (
+                (keyCode == 46 || keyCode == 63272) &&
+                (this.rawValue.substring(selectionStart, selectionEnd + 1) == decimal || this.rawValue.substring(selectionStart, selectionEnd + 1) == thousands)
+            ) {
                 selectionEnd = selectionEnd + 2;
                 selectionStart = selectionStart + 1;
             }
@@ -129,7 +134,10 @@ export class InputService {
             }
 
             //backspace key and the target digit is the decimal or thousands divider
-            if (keyCode == 8 && (this.rawValue.substring(selectionStart - 1, selectionEnd) == decimal || this.rawValue.substring(selectionStart - 1, selectionEnd) == thousands)) {
+            if (
+                keyCode == 8 &&
+                (this.rawValue.substring(selectionStart - 1, selectionEnd) == decimal || this.rawValue.substring(selectionStart - 1, selectionEnd) == thousands)
+            ) {
                 selectionStart = selectionStart - 2;
                 selectionEnd = selectionEnd - 1;
             }
@@ -171,7 +179,7 @@ export class InputService {
         return this.inputManager.storedRawValue;
     }
 
-    get value(): number {
+    get value(): number | null {
         return this.clearMask(this.rawValue);
     }
 

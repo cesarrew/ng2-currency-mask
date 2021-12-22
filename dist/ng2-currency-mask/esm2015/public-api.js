@@ -1,7 +1,0 @@
-/*
- * Public API Surface of ng2-currency-mask
- */
-export * from './lib/currency-mask.config';
-export * from './lib/currency-mask.directive';
-export * from './lib/currency-mask.module';
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHVibGljLWFwaS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uL3Byb2plY3RzL25nMi1jdXJyZW5jeS1tYXNrL3NyYy9wdWJsaWMtYXBpLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBOztHQUVHO0FBRUgsY0FBYyw0QkFBNEIsQ0FBQztBQUMzQyxjQUFjLCtCQUErQixDQUFDO0FBQzlDLGNBQWMsNEJBQTRCLENBQUMiLCJzb3VyY2VzQ29udGVudCI6WyIvKlxuICogUHVibGljIEFQSSBTdXJmYWNlIG9mIG5nMi1jdXJyZW5jeS1tYXNrXG4gKi9cblxuZXhwb3J0ICogZnJvbSAnLi9saWIvY3VycmVuY3ktbWFzay5jb25maWcnO1xuZXhwb3J0ICogZnJvbSAnLi9saWIvY3VycmVuY3ktbWFzay5kaXJlY3RpdmUnO1xuZXhwb3J0ICogZnJvbSAnLi9saWIvY3VycmVuY3ktbWFzay5tb2R1bGUnO1xuXG4iXX0=

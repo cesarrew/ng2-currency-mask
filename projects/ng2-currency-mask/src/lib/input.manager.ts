@@ -1,9 +1,7 @@
 export class InputManager {
-
     private _storedRawValue: string;
 
-    constructor(private htmlInputElement: any) {
-    }
+    constructor(private htmlInputElement: any) {}
 
     setCursorAt(position: number): void {
         if (this.htmlInputElement.setSelectionRange) {
@@ -29,8 +27,9 @@ export class InputManager {
         let haventReachedMaxLength = !(this.rawValue.length >= this.htmlInputElement.maxLength && this.htmlInputElement.maxLength >= 0);
         let selectionStart = this.inputSelection.selectionStart;
         let selectionEnd = this.inputSelection.selectionEnd;
-        let haveNumberSelected = (selectionStart != selectionEnd && this.htmlInputElement.value.substring(selectionStart, selectionEnd).match(/\d/)) ? true : false;
-        let startWithZero = (this.htmlInputElement.value.substring(0, 1) == "0");
+        let haveNumberSelected =
+            selectionStart != selectionEnd && this.htmlInputElement.value.substring(selectionStart, selectionEnd).match(/\d/) ? true : false;
+        let startWithZero = this.htmlInputElement.value.substring(0, 1) == "0";
         return haventReachedMaxLength || haveNumberSelected || startWithZero;
     }
 
@@ -69,7 +68,7 @@ export class InputManager {
 
         return {
             selectionStart: selectionStart,
-            selectionEnd: selectionEnd
+            selectionEnd: selectionEnd,
         };
     }
 

@@ -3,31 +3,27 @@
     "compileOnSave": false,
     "compilerOptions": {
         "baseUrl": "./",
+        "outDir": "./dist/out-tsc",
+        "forceConsistentCasingInFileNames": true,
+        "strict": true,
+        "noImplicitOverride": true,
+        "noPropertyAccessFromIndexSignature": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "sourceMap": true,
+        "paths": {
+            "ng2-currency-mask": ["dist/ng2-currency-mask/ng2-currency-mask", "dist/ng2-currency-mask"]
+        },
         "declaration": false,
         "downlevelIteration": true,
         "experimentalDecorators": true,
-        "forceConsistentCasingInFileNames": true,
-        "importHelpers": true,
-        "lib": [
-            "es2018",
-            "dom"
-        ],
-        "module": "es2020",
         "moduleResolution": "node",
-        "noFallthroughCasesInSwitch": true,
-        "noImplicitReturns": true,
-        "outDir": "./dist/out-tsc",
-        "paths": {
-            "ng2-currency-mask": [
-                "dist/ng2-currency-mask/ng2-currency-mask",
-                "dist/ng2-currency-mask"
-            ]
-        },
-        "sourceMap": true,
-        "strict": true,
+        "importHelpers": true,
+        "target": "es2017",
+        "module": "es2020",
+        "lib": ["es2020", "dom"],
         "strictNullChecks": false,
-        "strictPropertyInitialization": false,
-        "target": "es2017"
+        "strictPropertyInitialization": false
     },
     "angularCompilerOptions": {
         "enableI18nLegacyMessageIdFormat": false,

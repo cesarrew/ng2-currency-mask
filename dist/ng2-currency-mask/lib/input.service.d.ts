@@ -5,7 +5,7 @@ export declare class InputService {
     constructor(htmlInputElement: any, options: any);
     addNumber(keyCode: number): void;
     applyMask(isNumber: boolean, rawValue: string): string;
-    clearMask(rawValue: string): number;
+    clearMask(rawValue: string): number | null;
     changeToNegative(): void;
     changeToPositive(): void;
     fixCursorPosition(forceToEndPosition?: boolean): void;
@@ -19,6 +19,6 @@ export declare class InputService {
     get rawValue(): string;
     set rawValue(value: string);
     get storedRawValue(): string;
-    get value(): number;
+    get value(): number | null;
     set value(value: number);
 }

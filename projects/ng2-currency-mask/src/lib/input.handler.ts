@@ -1,7 +1,6 @@
 import { InputService } from "./input.service";
 
 export class InputHandler {
-
     private inputService: InputService;
     private onModelChange: Function;
     private onModelTouched: Function;

@@ -32,8 +32,8 @@ class InputManager {
         let haventReachedMaxLength = !(this.rawValue.length >= this.htmlInputElement.maxLength && this.htmlInputElement.maxLength >= 0);
         let selectionStart = this.inputSelection.selectionStart;
         let selectionEnd = this.inputSelection.selectionEnd;
-        let haveNumberSelected = (selectionStart != selectionEnd && this.htmlInputElement.value.substring(selectionStart, selectionEnd).match(/\d/)) ? true : false;
-        let startWithZero = (this.htmlInputElement.value.substring(0, 1) == "0");
+        let haveNumberSelected = selectionStart != selectionEnd && this.htmlInputElement.value.substring(selectionStart, selectionEnd).match(/\d/) ? true : false;
+        let startWithZero = this.htmlInputElement.value.substring(0, 1) == "0";
         return haventReachedMaxLength || haveNumberSelected || startWithZero;
     }
     get inputSelection() {
@@ -69,7 +69,7 @@ class InputManager {
         }
         return {
             selectionStart: selectionStart,
-            selectionEnd: selectionEnd
+            selectionEnd: selectionEnd,
         };
     }
     get rawValue() {
@@ -109,7 +109,10 @@ class InputService {
         if (!onlyNumbers) {
             return "";
         }
-        let integerPart = onlyNumbers.slice(0, onlyNumbers.length - precision).replace(/^0*/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, thousands);
+        let integerPart = onlyNumbers
+            .slice(0, onlyNumbers.length - precision)
+            .replace(/^0*/g, "")
+            .replace(/\B(?=(\d{3})+(?!\d))/g, thousands);
         if (integerPart == "") {
             integerPart = "0";
         }
@@ -120,7 +123,7 @@ class InputService {
             newRawValue += decimal + decimalPart;
         }
         let isZero = parseInt(integerPart) == 0 && (parseInt(decimalPart) == 0 || decimalPart == "");
-        let operator = (rawValue.indexOf("-") > -1 && allowNegative && !isZero) ? "-" : "";
+        let operator = rawValue.indexOf("-") > -1 && allowNegative && !isZero ? "-" : "";
         return operator + prefix + newRawValue + suffix;
     }
     clearMask(rawValue) {
@@ -180,7 +183,8 @@ class InputService {
                 selectionEnd = selectionEnd + 1;
             }
             //delete key and the target digit is the decimal or thousands divider
-            if ((keyCode == 46 || keyCode == 63272) && (this.rawValue.substring(selectionStart, selectionEnd + 1) == decimal || this.rawValue.substring(selectionStart, selectionEnd + 1) == thousands)) {
+            if ((keyCode == 46 || keyCode == 63272) &&
+                (this.rawValue.substring(selectionStart, selectionEnd + 1) == decimal || this.rawValue.substring(selectionStart, selectionEnd + 1) == thousands)) {
                 selectionEnd = selectionEnd + 2;
                 selectionStart = selectionStart + 1;
             }
@@ -189,7 +193,8 @@ class InputService {
                 selectionStart = selectionStart - 1;
             }
             //backspace key and the target digit is the decimal or thousands divider
-            if (keyCode == 8 && (this.rawValue.substring(selectionStart - 1, selectionEnd) == decimal || this.rawValue.substring(selectionStart - 1, selectionEnd) == thousands)) {
+            if (keyCode == 8 &&
+                (this.rawValue.substring(selectionStart - 1, selectionEnd) == decimal || this.rawValue.substring(selectionStart - 1, selectionEnd) == thousands)) {
                 selectionStart = selectionStart - 2;
                 selectionEnd = selectionEnd - 1;
             }
@@ -399,7 +404,7 @@ class InputHandler {
 const CURRENCYMASKDIRECTIVE_VALUE_ACCESSOR = {
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => CurrencyMaskDirective),
-    multi: true
+    multi: true,
 };
 class CurrencyMaskDirective {
     constructor(currencyMaskConfig, elementRef, keyValueDiffers) {
@@ -414,7 +419,7 @@ class CurrencyMaskDirective {
             precision: 2,
             prefix: "$ ",
             suffix: "",
-            thousands: ","
+            thousands: ",",
         };
         if (currencyMaskConfig) {
             this.optionsTemplate = currencyMaskConfig;
@@ -495,19 +500,13 @@ class CurrencyMaskDirective {
         this.inputHandler.setValue(value);
     }
 }
-CurrencyMaskDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "12.2.2", ngImport: i0, type: CurrencyMaskDirective, deps: [{ token: CURRENCY_MASK_CONFIG, optional: true }, { token: i0.ElementRef }, { token: i0.KeyValueDiffers }], target: i0.ɵɵFactoryTarget.Directive });
-CurrencyMaskDirective.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "12.2.2", type: CurrencyMaskDirective, selector: "[currencyMask]", inputs: { max: "max", min: "min", options: "options" }, host: { listeners: { "blur": "handleBlur($event)", "click": "handleClick($event)", "cut": "handleCut($event)", "input": "handleInput($event)", "keydown": "handleKeydown($event)", "keypress": "handleKeypress($event)", "keyup": "handleKeyup($event)", "paste": "handlePaste($event)" } }, providers: [
-        CURRENCYMASKDIRECTIVE_VALUE_ACCESSOR,
-        { provide: NG_VALIDATORS, useExisting: CurrencyMaskDirective, multi: true }
-    ], ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "12.2.2", ngImport: i0, type: CurrencyMaskDirective, decorators: [{
+CurrencyMaskDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.1.1", ngImport: i0, type: CurrencyMaskDirective, deps: [{ token: CURRENCY_MASK_CONFIG, optional: true }, { token: i0.ElementRef }, { token: i0.KeyValueDiffers }], target: i0.ɵɵFactoryTarget.Directive });
+CurrencyMaskDirective.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "13.1.1", type: CurrencyMaskDirective, selector: "[currencyMask]", inputs: { max: "max", min: "min", options: "options" }, host: { listeners: { "blur": "handleBlur($event)", "click": "handleClick($event)", "cut": "handleCut($event)", "input": "handleInput($event)", "keydown": "handleKeydown($event)", "keypress": "handleKeypress($event)", "keyup": "handleKeyup($event)", "paste": "handlePaste($event)" } }, providers: [CURRENCYMASKDIRECTIVE_VALUE_ACCESSOR, { provide: NG_VALIDATORS, useExisting: CurrencyMaskDirective, multi: true }], ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.1.1", ngImport: i0, type: CurrencyMaskDirective, decorators: [{
             type: Directive,
             args: [{
                     selector: "[currencyMask]",
-                    providers: [
-                        CURRENCYMASKDIRECTIVE_VALUE_ACCESSOR,
-                        { provide: NG_VALIDATORS, useExisting: CurrencyMaskDirective, multi: true }
-                    ]
+                    providers: [CURRENCYMASKDIRECTIVE_VALUE_ACCESSOR, { provide: NG_VALIDATORS, useExisting: CurrencyMaskDirective, multi: true }],
                 }]
         }], ctorParameters: function () { return [{ type: undefined, decorators: [{
                     type: Optional
@@ -548,26 +547,15 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "12.2.2", ngImpor
 
 class CurrencyMaskModule {
 }
-CurrencyMaskModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "12.2.2", ngImport: i0, type: CurrencyMaskModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-CurrencyMaskModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "12.0.0", version: "12.2.2", ngImport: i0, type: CurrencyMaskModule, declarations: [CurrencyMaskDirective], imports: [CommonModule,
-        FormsModule], exports: [CurrencyMaskDirective] });
-CurrencyMaskModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "12.2.2", ngImport: i0, type: CurrencyMaskModule, imports: [[
-            CommonModule,
-            FormsModule
-        ]] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "12.2.2", ngImport: i0, type: CurrencyMaskModule, decorators: [{
+CurrencyMaskModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.1.1", ngImport: i0, type: CurrencyMaskModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+CurrencyMaskModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "12.0.0", version: "13.1.1", ngImport: i0, type: CurrencyMaskModule, declarations: [CurrencyMaskDirective], imports: [CommonModule, FormsModule], exports: [CurrencyMaskDirective] });
+CurrencyMaskModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "13.1.1", ngImport: i0, type: CurrencyMaskModule, imports: [[CommonModule, FormsModule]] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.1.1", ngImport: i0, type: CurrencyMaskModule, decorators: [{
             type: NgModule,
             args: [{
-                    imports: [
-                        CommonModule,
-                        FormsModule
-                    ],
-                    declarations: [
-                        CurrencyMaskDirective
-                    ],
-                    exports: [
-                        CurrencyMaskDirective
-                    ]
+                    imports: [CommonModule, FormsModule],
+                    declarations: [CurrencyMaskDirective],
+                    exports: [CurrencyMaskDirective],
                 }]
         }] });
 
@@ -580,4 +568,4 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "12.2.2", ngImpor
  */
 
 export { CURRENCYMASKDIRECTIVE_VALUE_ACCESSOR, CURRENCY_MASK_CONFIG, CurrencyMaskDirective, CurrencyMaskModule };
-//# sourceMappingURL=ng2-currency-mask.js.map
+//# sourceMappingURL=ng2-currency-mask.mjs.map
