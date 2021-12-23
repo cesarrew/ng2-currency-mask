@@ -1,6 +1,22 @@
-<input currencyMask [formControl]="reactiveFormControl" [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" />
+<h3>Template Driven (ngModel) Example</h3>
 
-<br />
-<br />
+<input currencyMask [(ngModel)]="ngModelExample" [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" />
+<span> --> {{ ngModelExample }}</span>
 
-<input currencyMask [(ngModel)]="templateDrivenValue" [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" />
+<h3>Reactive Forms (formControl) Example</h3>
+
+<input currencyMask [formControl]="formControlExample" [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" />
+<span> --> {{ formControlExample.value }}</span>
+
+<h3>Reactive Forms (formArray) Example</h3>
+
+<form [formGroup]="formGroupExample">
+    <div formArrayName="formArrayExample">
+        <div *ngFor="let control of formArrayExample.controls; let i = index">
+            <input currencyMask [formControlName]="i" />
+            <span> --> {{ control.value }}</span>
+            <br />
+            <br />
+        </div>
+    </div>
+</form>
