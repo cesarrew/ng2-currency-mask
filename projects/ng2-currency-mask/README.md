@@ -2,6 +2,10 @@
 
 A very simple currency mask directive for Angular that allows using a number attribute with the ngModel. In other words, the model is a number, and not a string with a mask. It was tested in Angular version 13.
 
+## Example App
+
+https://stackblitz.com/edit/angular-ivy-bpn8by
+
 ## Getting Started
 
 ### Installing and Importing
@@ -91,9 +95,3 @@ This directive also provides built-in validation for minimum and maximum values.
 ```html
 <input currencyMask [(ngModel)]="value" min="-10.50" max="100.75" />
 ```
-
-### Example App
-
-https://angular-ivy-bpn8by.stackblitz.io
-
-## Questions? Open a Issue!
