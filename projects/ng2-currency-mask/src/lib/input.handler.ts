@@ -203,8 +203,9 @@ export class InputHandler {
     private setCursorPosition(event: any): void {
         let rawValueWithoutSuffixEndPosition = this.inputService.getRawValueWithoutSuffixEndPosition();
 
-        // For some reason in android the event got override before the timeout and change the target, so I needed to store the input target in a variable
+        // For some reason, in Android, the event got override before the timeout and change the target.
         const inputElement = event.target;
+
         setTimeout(function () {
             inputElement.setSelectionRange(rawValueWithoutSuffixEndPosition, rawValueWithoutSuffixEndPosition);
         }, 0);
