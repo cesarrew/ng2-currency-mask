@@ -92,39 +92,8 @@ This directive also provides built-in validation for minimum and maximum values.
 <input currencyMask [(ngModel)]="value" min="-10.50" max="100.75" />
 ```
 
-## Quick fixes
+### Example App
 
-### Ionic 2-3
-
-Input not working on mobile keyboard
-
-```html
-<!-- Change the type to 'tel' -->
-<input currencyMask type="tel" [(ngModel)]="value" />
-```
-
-Input focus get hide by the mobile keyboard
-
-on HTML
-
-```html
-<!-- Change the type to 'tel' -->
-<input currencyMask type="tel" [(ngModel)]="value" [id]="'yourInputId' + index" (focus)="scrollTo(index)" />
-```
-
-on .ts
-
-```ts
-import { Content } from 'ionic-angular';
-
-export class...
-
-    @ViewChild(Content) content: Content;
-
-    scrollTo(index) {
-        let yOffset = document.getElementById('yourInputId' + index).offsetTop;
-        this.content.scrollTo(0, yOffset + 20);
-    }
-```
+https://angular-ivy-bpn8by.stackblitz.io
 
 ## Questions? Open a Issue!
