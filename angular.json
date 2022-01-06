@@ -75,7 +75,7 @@
                         "polyfills": "projects/library-test/src/polyfills.ts",
                         "tsConfig": "projects/library-test/tsconfig.app.json",
                         "assets": ["projects/library-test/src/favicon.ico", "projects/library-test/src/assets"],
-                        "styles": ["projects/library-test/src/styles.css"],
+                        "styles": ["projects/library-test/src/styles.css", "node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css"],
                         "scripts": []
                     },
                     "configurations": {

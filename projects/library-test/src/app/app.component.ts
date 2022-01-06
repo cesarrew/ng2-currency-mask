@@ -7,6 +7,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup } from "@angular/forms";
     styles: [],
 })
 export class AppComponent implements OnInit {
+    angularMaterialExample: number = 60;
     formControlExample = new FormControl(20);
     formGroupExample: FormGroup;
     ngModelExample: number = 10;

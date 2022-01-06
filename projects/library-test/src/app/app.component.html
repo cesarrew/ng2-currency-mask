@@ -20,3 +20,10 @@
         </div>
     </div>
 </form>
+
+<h3>Angular Material Example</h3>
+
+<mat-form-field appearance="outline">
+    <mat-label>Value</mat-label>
+    <input currencyMask matInput [(ngModel)]="angularMaterialExample" [options]="{ prefix: '$ ', thousands: '.', decimal: ',' }" />
+</mat-form-field>
