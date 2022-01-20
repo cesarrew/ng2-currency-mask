@@ -138,16 +138,12 @@ export class InputHandler {
         this.inputService.fixCursorPosition();
     }
 
-    handlePaste(event: any): void {
+    handlePasteAndFocusOut(event: any): void {
         if (this.isReadOnly()) {
             return;
         }
-
-        setTimeout(() => {
-            this.inputService.updateFieldValue();
-            this.setValue(this.inputService.value);
-            this.onModelChange(this.inputService.value);
-        }, 1);
+        event.preventDefault();
+        this.onModelChange(this.inputService.value);
     }
 
     updateOptions(options: any): void {
